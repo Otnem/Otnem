@@ -1,0 +1,51 @@
+{
+  "name": "instaclone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/serverFiles/app.js",
+  "scripts": {
+    "test": "nodemon serverFiles/index.js",
+    "start": "node serverFiles/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SingleSimha/InstaClone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "16.x"
+  },
+  "bugs": {
+    "url": "https://github.com/SingleSimha/InstaClone/issues"
+  },
+  "homepage": "https://github.com/SingleSimha/InstaClone#readme",
+  "devDependencies": {
+    "mkdirp": "^1.0.4",
+    "nodemon": "^2.0.15",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "@digitalroute/email-verify": "^0.2.2",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "cloudinary": "^1.29.0",
+    "connect-ensure-login": "^0.1.1",
+    "dotenv": "^16.0.0",
+    "email-existence": "^0.1.6",
+    "express": "^4.17.3",
+    "express-flash": "0.0.2",
+    "express-handlebars": "^6.0.3",
+    "express-session": "^1.17.2",
+    "firebase-admin": "^10.0.2",
+    "multer": "^1.4.4",
+    "nodemailer": "^6.7.3",
+    "open": "^8.4.0",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
+    "smpljavascript": "^1.1.13",
+    "socket.io": "^4.5.0",
+    "streamifier": "^0.1.1",
+    "web-push": "^3.4.5"
+  }
+}
