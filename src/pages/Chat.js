@@ -77,13 +77,45 @@ const Chat = () => {
       .search-sug:hover{\
           color:rgb(26, 243, 30)\
       }\
+	  .chat-messages {\
+		display: flex;\
+		flex-direction: column;\
+		max-height: 470px;\
+		overflow-y: scroll\
+	}\
+	.chat-message-left,\
+	.chat-message-right {\
+		display: flex;\
+		flex-shrink: 0\
+	}\
+	.chat-message-left {\
+		margin-right: auto\
+	}\
+	.chat-message-right {\
+		flex-direction: row-reverse;\
+		margin-left: auto;\
+	}\
+	.py-3 {\
+		padding-top: 1rem!important;\
+		padding-bottom: 1rem!important;\
+	}\
+	.px-4 {\
+		padding-right: 1.5rem!important;\
+		padding-left: 1.5rem!important;\
+	}\
+	.flex-grow-0 {\
+		flex-grow: 0!important;\
+	}\
+	.border-top {\
+		border-top: 1px solid #dee2e6!important;\
+	}\
    "
   }</style>
       <Navbar>
 
       </Navbar>
       <main class="content "  >
-    <div class="container p-0" style={{marginTop:'2px'}}>
+    <div class="containr p-0 py-lg-2 px-lg-4 mt-lg-3 mt-0">
 
 
 		<div class="card">
@@ -112,7 +144,7 @@ const Chat = () => {
 				
 				
 				</div>
-				<div id='panel' class="col-12 col-lg-7 col-xl-9 d-lg-block d-none">
+				<div id='panel' class="col-12 col-lg-7 col-xl-9 d-lg-block d-none" style={{borderLeft: "1px solid rgb(224, 224, 224)"}}>
 					<div class="py-2 px-4 border-bottom d-lg-block">
 						<div class="d-flex align-items-center py-1">
 							<div class="position-relative" style={{height:"50px",width:"50px",objectFit:"cover"}}>
