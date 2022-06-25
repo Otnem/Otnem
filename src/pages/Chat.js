@@ -9,7 +9,7 @@
 	import axios from 'axios';
 
 	const Chat = () => {
-	const { data } = axios.get('https://otnem.herokuapp.com/chatMem')
+	const { data } = axios.get('http://localhost:1000/chatMem')
 	console.log(data)
 	useEffect(() => {
 		
