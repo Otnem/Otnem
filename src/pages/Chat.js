@@ -1,89 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Navbar from '../Navbar';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import '../assets/css/boostrap.min.css'
-import profile from '../assets/images/profile.jpg'
-import { faPaperPlane} from '@fortawesome/free-solid-svg-icons';
-import '../assets/css/all.css'
+	import React, { useState, useEffect } from 'react';
+	import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+	import Navbar from '../Navbar';
+	import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+	import '../assets/css/boostrap.min.css'
+	import profile from '../assets/images/profile.jpg'
+	import { faPaperPlane} from '@fortawesome/free-solid-svg-icons';
+	import '../assets/css/all.css'
+	import axios from 'axios';
 
-const Chat = () => {
-	
+	const Chat = () => {
+	const { data } = axios.get('https://otnem.herokuapp.com/chatMem')
+	console.log(data)
 	useEffect(() => {
 		
-	  }, []);
-  return (
-    <div>
-      <style>{"\
-     @media screen and (max-width: 991px)  {\
-      .navbar__  {\
-          display:none;\
-      }\
-      body {\
-          padding-bottom: 0;\
-          padding-top:0px\
-      }\
-	  .content{\
-        padding-top:0px\
-	  }\
-	  .chat-messages{\
-        height:82vh;\
-	  }\
-      #chat-messages{\
-          max-height: calc(var(--vh, 1vh) * 100);\
-      }\
-      #chat{\
-          color:#000;\
-      }\
-      .chats{\
-          color: #000;\
-          max-height: 90vh;\
-      }\
-      #back{\
-          display: block !important;\
-      }\
-      .non-chat-c{\
-          display: none;\
-      }\
-  }\
-  #chat{\
-    color:#23F649\
-  }\
-  body {\
-    padding-bottom:0px;\
-    padding-top:0px\
-  }\
-      #sc{\
-          visibility: hidden;\
-          text-align: start;\
-          padding: 0.7rem 1rem;\
-          border:1px solid #DBE0E4;\
-          border-radius: 1em;\
-          background-color: white;\
-      }\
-      #s-user:focus + #sc, #sc:focus + #sc{\
-          visibility: visible;\
-      }\
-      .search-sug{\
-          text-align: start;\
-          width: 100%;\
-          cursor: pointer;\
-          padding: 0.2em 0;\
-          font-weight: 450;\
-          transition:all 200ms;\
-          background:none;\
-          border:none;\
-      }\
-      .search-sug:hover{\
-          color:rgb(26, 243, 30)\
-      }\
-   "
-  }</style>
-      <Navbar>
+		}, []);
+	return (
+	<div>
+		<style>{"\
+		@media screen and (max-width: 991px)  {\
+		.navbar__  {\
+			display:none;\
+		}\
+		body {\
+			padding-bottom: 0;\
+			padding-top:0px\
+		}\
+		.content{\
+		padding-top:0px\
+		}\
+		.chat-messages{\
+		height:82vh;\
+		}\
+		#chat-messages{\
+			max-height: calc(var(--vh, 1vh) * 100);\
+		}\
+		#chat{\
+			color:#000;\
+		}\
+		.chats{\
+			color: #000;\
+			max-height: 90vh;\
+		}\
+		#back{\
+			display: block !important;\
+		}\
+		.non-chat-c{\
+			display: none;\
+		}\
+	}\
+	#chat{\
+	color:#23F649\
+	}\
+	body {\
+	padding-bottom:0px;\
+	padding-top:0px\
+	}\
+		#sc{\
+			visibility: hidden;\
+			text-align: start;\
+			padding: 0.7rem 1rem;\
+			border:1px solid #DBE0E4;\
+			border-radius: 1em;\
+			background-color: white;\
+		}\
+		#s-user:focus + #sc, #sc:focus + #sc{\
+			visibility: visible;\
+		}\
+		.search-sug{\
+			text-align: start;\
+			width: 100%;\
+			cursor: pointer;\
+			padding: 0.2em 0;\
+			font-weight: 450;\
+			transition:all 200ms;\
+			background:none;\
+			border:none;\
+		}\
+		.search-sug:hover{\
+			color:rgb(26, 243, 30)\
+		}\
+	"
+	}</style>
+		<Navbar>
 
-      </Navbar>
-      <main class="content "  >
-    <div class="container p-0" style={{marginTop:'2px'}}>
+		</Navbar>
+		<main class="content "  >
+	<div class="container p-0" style={{marginTop:'2px'}}>
 
 
 		<div class="card">
@@ -93,7 +95,7 @@ const Chat = () => {
 					<div class="px-4 ">
 						<div class="d-flex align-items-center mt-3">
 							<div class="flex-grow-1">
-                            <h1 class="h3 mb-3">Messages</h1>
+							<h1 class="h3 mb-3">Messages</h1>
 
 								<input type="text" class="form-control my-3" placeholder="Search..."></input>
 							</div>
@@ -102,7 +104,7 @@ const Chat = () => {
 
 					<a href="/user"  class="list-group-item list-group-item-action border-0 ">
 						<div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"></img>
+						<img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"></img>
 							<div class="flex-grow-1 ml-3">
 								Alia 
 								<div class="small text-start font-weight-bold " style={{fontWeight:'bold'}}><span class="fas fa-circle chat-online "></span> Online</div>
@@ -116,7 +118,7 @@ const Chat = () => {
 					<div class="py-2 px-4 border-bottom d-lg-block">
 						<div class="d-flex align-items-center py-1">
 							<div class="position-relative" style={{height:"50px",width:"50px",objectFit:"cover"}}>
-                            <img src={profile} class="rounded-circle mr-1" alt="Sharon Lessman" style={{height:"100%",width:"100%"}}></img>
+							<img src={profile} class="rounded-circle mr-1" alt="Sharon Lessman" style={{height:"100%",width:"100%"}}></img>
 							</div>
 							<div class="flex-grow-1 pl-3">
 								<strong>Alia </strong>
@@ -132,7 +134,7 @@ const Chat = () => {
 
 							<div class="chat-message-right pb-4">
 								<div>
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"></img>
+								<img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"></img>
 									<div class="text-muted small text-nowrap mt-2">2:33 am</div>
 								</div>
 								<div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
@@ -269,8 +271,8 @@ const Chat = () => {
 						<div class="input-group gap-3 ">
 							<input type="text" class="form-control" placeholder="Type your message"></input>
 							<button class="">
-                               <FontAwesomeIcon style={{fontSize:'25px',color:'#7BF992'}} icon={faPaperPlane}/>
-                            </button>
+								<FontAwesomeIcon style={{fontSize:'25px',color:'#7BF992'}} icon={faPaperPlane}/>
+							</button>
 						</div>
 					</div>
 
@@ -281,13 +283,13 @@ const Chat = () => {
 			</div>
 		</div>
 	</div>
-	
-</main>
+
+	</main>
 
 
 
-    </div>
-  )
-}
+	</div>
+	)
+	}
 
-export default Chat
+	export default Chat
