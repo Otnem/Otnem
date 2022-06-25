@@ -1,6 +1,4 @@
 const express = require("express")
-const exphbs = require("express-handlebars")
-const path = require('path')
 require('dotenv').config()
 const router = require('./routes/posts')
 const PORT = process.env.PORT
@@ -17,7 +15,6 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
 
-app.use(express.static('./MentoNew'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 const sessionMiddleWare = session({
@@ -30,9 +27,6 @@ app.use(sessionMiddleWare)
 app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
-app.engine('hbs', exphbs.engine({ defaultLayout: 'indexLayout', extname: '.hbs' }));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
 app.use('/',router)
 
 io.use(wrap(sessionMiddleWare))
