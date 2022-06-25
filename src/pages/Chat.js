@@ -9,11 +9,13 @@
 	import axios from 'axios';
 
 	const Chat = () => {
-	const { data } = axios.get('http://localhost:1000/chatMem')
-	console.log(data)
-	useEffect(() => {
-		
-		}, []);
+	let baseURL = 'http://localhost:1000'
+	useEffect(async() => {
+		axios.defaults.withCredentials = true
+		console.log(await axios.post(`${baseURL}/login?`,{email:"pravithba10@gmail.com",password:"PravithBA@10",credentials:"include"}))
+		let { data } = await axios.get(`${baseURL}/chatMem`)
+		console.log(data)
+	}, []);
 	return (
 	<div>
 		<style>{"\
