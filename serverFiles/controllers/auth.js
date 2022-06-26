@@ -1,21 +1,19 @@
-const login = async(req,res)=>{
-    res.send({layout:'loginLayout'})
-}
-const register = async(req,res)=>{
-    res.send({layout:'registerLayout'})
-}
+const login = (req,res)=>res.send({success:true}).status(202)
+const register = (req,res)=>res.send({success:true}).status(202)
 const registerPost= async(req,res)=>{
     try{
         const body = await req.body
         const userSnapshot = await userDB.get()
+        if(!(body.password && body.email && body.name))
+            return res.send({success:false,msg:"Missing credentials"}).status(401)
         if(body.password.length < 8)
-            return res.send({layout:'registerLayout',err:true,msg:"Password too short"})
+            return res.send({success:false,msg:"Password too short"}).status(401)
         if(body.name.length < 5)
-            return res.send({layout:'registerLayout',err:true,msg:"Username not length too small"})
+            return res.send({success:false,msg:"Username not length too small"}).status(401)
         if(body.name.length > 20)
-            return res.send({layout:'registerLayout',err:true,msg:"Username not length too large"})
+            return res.send({success:false,msg:"Username not length too large"}).status(401)
         if(body.name.includes('%'))
-            return res.send({layout:'registerLayout',err:true,msg:"% sign cant be included sowwy"})
+            return res.send({success:false,msg:"% sign cant be included sowwy"}).status(401)
         let users = userSnapshot.docs.map(doc=>{
         if(doc.data().name)
             return doc.data()
@@ -23,9 +21,9 @@ const registerPost= async(req,res)=>{
         users = users.filter(e=>e!==undefined)
         for(i=0;i<users.length;i++){
         if(users[i].name == body.name)
-        return res.send({layout:'registerLayout',err:true,msg:"Another user with same name already exists"})
+        return res.send({success:false,msg:"Another user with same name already exists"}).status(401)
         if(users[i].email == body.email)
-        return res.send({layout:'registerLayout',err:true,msg:"Another user with same email alredy exists"})
+        return res.send({success:false,msg:"Another user with same email alredy exists"}).status(401)
         }
         const hashedPasswrod = await bcrypt.hash(body.password,10)
         let userInfoObj = {
@@ -51,7 +49,7 @@ const registerPost= async(req,res)=>{
             text:`The verifiation link is ${process.env.VERIFY_LINK}?id=${docref.id}`,
             html:`<h1>Mento</h1><br><h3>The verifiation link is ${process.env.VERIFY_LINK}?id=${docref.id}</h3>`
         })
-        return res.redirect('redPage')
+        return res.send({success:true,redirect:'/red'}).status(202)
     }
     catch(err){
         console.log(err)
@@ -61,20 +59,19 @@ const loginPost = async(req,res)=>{
     try{
         let body = await req.body
         if(!body.password || !body.email)
-            return res.send({layout:'loginLayout',err:true,msg:"Fields missing"})
+            return res.send({success:false,msg:"Fields missing"}).status(400)
         let snap = await userDB.where('email', '==', body.email).get()
         let userName = snap.docs.map(doc=>{return doc.id})
         userName = userName.filter(e=>e!==undefined)
         userName = userName[0]
         body['name'] = userName
         if(!userName)
-            return res.send({layout:'loginLayout',err:true,msg:"Wrong Email"})
+            return res.send({success:false,msg:"Wrong Email"}).status(401)
         bcrypt.compare(body.password,((await userDB.doc(userName).get()).data()).password,(err,bcResponse)=>{
             if(!bcResponse)
-                return res.send({layout:'loginLayout',err:true,msg:"Wrong Password"})
-            req.login(body,(error,response)=>{
-            })
-            return res.redirect('/')
+                return res.send({success:false,msg:"Wrong Password"}).status(401)
+            req.login(body,()=>{})
+            return res.send({success:true}).status(202)
         })
     }
     catch(err){
@@ -86,12 +83,12 @@ const verifyUser = async(req,res)=>{
         const {id} = await req.query
         let credentials = (await unVerifiedDB.doc(id).get()).data()
         if(!credentials)
-            return res.send('Wrong verification id or user already exists')
+            return res.send({success:false,msg:'Wrong verification id or user already exists'}).status(401)
         if((await userDB.doc(credentials.name).get()).data())
-            return res.send('User already exists')
+            return res.send({success:false,msg:'User already exists'}).status(401)
         await userDB.doc(credentials.name).set(credentials)
         await unVerifiedDB.doc(id).delete()
-        res.redirect('login')
+        res.send({success:true}).status(201)
     }
     catch(err){
         console.log(err)
@@ -99,7 +96,7 @@ const verifyUser = async(req,res)=>{
 }
 const logout = async(req,res)=>{
     await req.logout()
-    res.end()
+    res.send({success:true}).status(200)
 }
-module.exports = {login,register,loginPost,registerPost,verifyUser,logout}
+module.exports = {loginPost,registerPost,verifyUser,logout,login,register}
 const { userDB, bcrypt, unVerifiedDB, emailer } = require('./posts')

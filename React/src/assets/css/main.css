@@ -207,7 +207,11 @@ label {
     background: #62c16e;
     cursor: pointer;
 }
+.signup-btn:disabled{
+    opacity: 0.5;
+    cursor:not-allowed;
 
+}
 @media screen and (min-width:900px){
     .split-screen {
         flex-direction: row;

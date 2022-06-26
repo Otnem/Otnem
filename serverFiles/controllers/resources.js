@@ -127,7 +127,8 @@ const deleteComment = async (req,res)=>{
 }
 const uploadFile = async(req,res)=>{
     try {
-        let userName = await getUserName(req) || "Pravith B A"
+        let userName = await getUserName(req)
+        let userData = await getUser(userName)
         let body = await req.body
         let titleArr = []
         let discArr = []
@@ -186,6 +187,8 @@ const uploadFile = async(req,res)=>{
                         tags:tags||"none",
                     }
                     let id = smjs.randomUniqIdGen(40)
+                    finalObj['profilePic'] = userData.profilePic
+                    finalObj['verified'] = userData.verified
                     await userDB.doc(`${userName}`).collection(`posts`).doc(id).set(finalObj)
                     finalObj['user'] = userName
                     await postDB.doc(id).set(finalObj)

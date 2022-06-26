@@ -1,13 +1,15 @@
 const express = require('express')
 const { test, assignNotif, mainPage, notifPage, redPage, pageUnderConstruction} = require("../controllers/posts.js")
 const {uploadPostPage, uploadFile, postPreviewPage, postComments, deleteComment, searchPage, followUser, unfollowUser, deletePost, checkIfUserExistsRoute, getUserApi, getLikes, addLike, removeLike, getAllUsersApi} = require('../controllers/resources')
-const {registerPost, logout, login, register, verifyUser, loginPost} = require('../controllers/auth')
+const {registerPost, logout, verifyUser, loginPost, login, register} = require('../controllers/auth')
 const {changeCredentials, profile, settings} = require('../controllers/profile')
 const {chatRoom, chatPage, getChatMembers} = require('../controllers/chat')
 const mutler = require('multer')
 const router = express.Router()
 const upload = mutler()
+const cors = require('cors')
 
+router.use(cors({"origin": 'http://localhost:3000',"methods": "GET,HEAD,PUT,PATCH,POST,DELETE", "allowedHeaders":'X-Requested-With, Content-Type, Accept, Origin, Authorization', "credentials":true}))
 router.get('/',mainPage)
 router.get('/login',checkNotAuth,login)
 router.get('/register',checkNotAuth,register)
@@ -48,7 +50,7 @@ function checkAuth(req,res,next){
         next()
     }
     else{
-        return res.redirect('login')
+        return res.send({success:false,redirect:'/login',middleware:true}).status(401)
     }
 }
 function checkNotAuth(req,res,next){
@@ -56,7 +58,7 @@ function checkNotAuth(req,res,next){
         next()
     }
     else{
-        return res.redirect('/')
+        return res.send({success:false,redirect:'/',middleware:true}).status(401)
     }
 }
 

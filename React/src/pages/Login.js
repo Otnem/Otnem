@@ -1,6 +1,5 @@
 	import video from '../assets/videos/video.mp4';
 	import '../assets/css/main.css'
-	import { Link } from "react-router-dom";
 	import React, { useState, useEffect } from 'react';
 	import axios from 'axios'
 
@@ -8,25 +7,42 @@
 const Login = () => {
 	const [email,setEmail] = useState('')
 	const [password,setPassword] = useState('')
+	const [errorMsg,setErrorMsg] = useState('')
+	const [subBtnDisable,setSubBtnDisable] = useState(true)	
 	let baseURL = "http://localhost:1000"
-	useEffect(() => {
-	document.title = "Login | Otnem - Share your project with the world"
+	
+	useEffect(async() => {
+		axios.defaults.withCredentials = true
+		document.title = "Login | Otnem - Share your project with the world"
+		let loginResponse = await axios.get(`${baseURL}/login`)
+		if(loginResponse.data.middleware)
+			window.location.href = loginResponse.data.redirect
 	}, []);
 	useEffect(()=>{
 		if(email != '' && password != '')
-			document.querySelector('#loginFunCode').ariaDisabled = false
+			setSubBtnDisable(false)
 		else
-			document.querySelector('#loginFunCode').ariaDisabled = true
-		console.log(email,password)
+			setSubBtnDisable(true)
 	},[email,password])
 	const login = async(e)=>{
 		e.preventDefault()
 		let loginResponse = await axios.post(`${baseURL}/login`,{email,password})
+		if(loginResponse.data.success === true)
+			window.location.href = `/`
+		else
+			setErrorMsg(loginResponse.data.msg)
 	}
 	const top ={
 	marginTop:"4rem"
 	};
-
+	const errStyle = {
+		fontSize:"1.5em",
+		padding:"0.5em 1em",
+		background:"red",
+		color:"white",
+		borderRadius:"0.2em",
+		display:(errorMsg !== '')?"block":"none"
+	}
 	const background = {
 	background:"#fff"
 	}
@@ -60,14 +76,14 @@ const Login = () => {
 		</div>
 		<div className='right mt-lg-5' style={top}>
 			<form>
-
+				<div className='err' style={errStyle}>{errorMsg}</div>
 				<section className='copy'>
 				<h2 className="text-2xl  " style={{fontWeight:"bold"}}>Sign in</h2>
 			
 			</section>
 			<div className="input-container email">
 				<label for="email" >Email</label>
-				<input id="email" style={mystyle} onChange={e=>setEmail(e.target.value)} placeholder="Enter your email" required  className="login_signup_textfield" name="email"  type="email"></input>
+				<input autoFocus id="email" style={mystyle} onChange={e=>setEmail(e.target.value)} placeholder="Enter your email" required  className="login_signup_textfield" name="email"  type="email"></input>
 			</div>
 			<div className="input-container password">
 				<label for="password">Password</label>
@@ -80,7 +96,7 @@ const Login = () => {
 				<p>Be a part of our family | <a href="/register" className="text-decoration-none"> <strong>Sign up</strong></a>
 				</p>
 				</div>
-				<button onClick={login} className="signup-btn bg-priamry mt-3" name="submit" id="loginFunCode">
+				<button onClick={login} disabled={subBtnDisable} className="signup-btn bg-priamry mt-3" name="submit" id="loginFunCode">
 					Sign In
 				</button>
 				<p className="mt-1 w-full text-right"><a href="forgot-password.html" className='mt-1 d-block text-right'>Forgot Password?</a></p>

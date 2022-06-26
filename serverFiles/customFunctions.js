@@ -92,11 +92,11 @@ async function getAllPosts(pacNum){
             data['commentsQty'] = (await postDB.doc(doc.id).collection('comments').get()).size
             data['likesArray'] = likesArr.docs.map(doc=>doc.data().user)
             data['fields'] = data.titleArr.map((e,i)=>{
-                    let field = {}
-                    field['title'] = e
-                    field['disc'] = data.discArr[i]
-                    field['img'] = data.imgURLArr[i]
-                    return field
+                let field = {}
+                field['title'] = e
+                field['disc'] = data.discArr[i]
+                field['img'] = data.imgURLArr[i]
+                return field
             })
             return data
         }))
