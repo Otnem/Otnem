@@ -21,8 +21,7 @@ const Login = () => {
 	},[email,password])
 	const login = async(e)=>{
 		e.preventDefault()
-		let { data } = await axios.post(`${baseURL}/login`,{email,password})
-		console.log(data)
+		let loginResponse = await axios.post(`${baseURL}/login`,{email,password})
 	}
 	const top ={
 	marginTop:"4rem"
