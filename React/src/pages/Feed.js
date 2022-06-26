@@ -129,7 +129,7 @@ const Feed = () => {
                 </div>
                 <div class="top">
                     <div class="items">
-                    <a style={iconStyle} class="item sned"  href={`/chatRoom?user=${post.user}}&redirect=true`}>  <FontAwesomeIcon  icon={faMessage} /> </a>
+                    <a style={iconStyle} class="item sned"  href={`/chatRoom?user=${post.user}&redirect=true`}>  <FontAwesomeIcon  icon={faMessage} /> </a>
                     <div style={iconStyle} class="item star"  id="{{postName}}-id" postNum="{{postName}}" user="{{userName}}" onclick="removeLike('{{user}}','{{postName}}')">
                     <FontAwesomeIcon  icon={faHeart} />
                     </div>
