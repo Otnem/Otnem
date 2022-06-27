@@ -563,9 +563,9 @@ i {
 }
 
 @media screen and (max-width: 991px) {
- .posts_cards {
-   margin: 0;
- }
+.posts_cards {
+  margin: 0;
+}
 }
 
 .grid_posts {
@@ -591,6 +591,7 @@ i {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  margin-top: 5.5em;
 }
 
 .user .settings i {
@@ -598,10 +599,11 @@ i {
 }
 
 .cover {
+  margin-top: -1em;
   height: 200px;
   width: 100%;
   border-radius: 1rem;
- 
+
 }
 
 .mt--4 {
@@ -612,7 +614,7 @@ i {
 
 .cover img {
   width: 100%;
-  height: 100%;
+  height: 150%;
   object-fit: cover;
 }
 .chat-messages {
@@ -640,18 +642,13 @@ i {
       .user {
         width: 100%;
       }
-   .navbar__ {
-    
-   }
-   .cover {
-     width: 100%;
-     height: 200px;
-     border-bottom-left-radius: 50px;
-     border-bottom-right-radius: 50px;
-   }
-   .cover img {
-   }
-   
+  .cover {
+    width: 100%;
+    height: 200px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
+  
 }
 
 @media screen and (max-wdith:991px) {
@@ -1044,7 +1041,7 @@ p strong {
   }
   
   .bg_main {
-       background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(20px);
       transform: translateZ(0px);
   }

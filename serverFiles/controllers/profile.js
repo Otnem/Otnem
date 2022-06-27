@@ -3,10 +3,11 @@ const profile = async(req,res)=>{
         let pacNum = (typeof req.query.packet === 'number' && req.query.packet > 0)?req.query.packet:1
         let userName = await getUserName(req)
         let query = await req.query
+        console.log(userName,query.user)
         if(query.user && !await checkIfUserExists(query.user))
-            return res.redirect('/')
+            return res.send({success:false,msg:"User doesn't exist"}).status(406)
         if(!query.user && !userName)
-            return res.redirect('login')
+            return res.send({success:false,msg:"UnAuthenticated",redirect:'/login'}).status(401)
         if(query.user)
             userName = query.user
         let userObj = await getUser(userName)
@@ -45,14 +46,14 @@ const profile = async(req,res)=>{
         let userPfp = ''
         if(req.isAuthenticated())
             userPfp = (await getUser(await getUserName(req))).profilePic
-        res.send({layout:'profileLayout',userObj:userObj,profilePic:userPfp,isAuth:req.isAuthenticated()})
+        res.send({success:true,userObj:userObj,profilePic:userPfp,isAuth:req.isAuthenticated()}).status(200)
     }catch(err){
         console.log(err)
     }
 }
 const settings = async(req,res)=>{
     let userData = await getUser(await getUserName(req))
-    res.send({userName:userData.userName,profilePic:userData.profilePic,userData:userData})
+    res.send({userName:userData.userName,profilePic:userData.profilePic,userData:userData}).status(200)
 }
 const changeCredentials = async(req,res)=>{
     try{
@@ -62,7 +63,7 @@ const changeCredentials = async(req,res)=>{
             case 'password':
                 let {newElement} = await req.body
                 if(newElement.length < 8)
-                    return res.send({success:false,msg:"Password too short"})
+                    return res.send({success:false,msg:"Password too short"}).status(400)
                 let {currentElement} = await req.body
                 let currentPassword = (await userDB.doc(userName).get()).data()
                 currentPassword = currentPassword.password
@@ -70,16 +71,16 @@ const changeCredentials = async(req,res)=>{
                     if(response){
                         let newHashedPassword = await bcrypt.hash(newElement,10)
                         await userDB.doc(userName).update({password:newHashedPassword})
-                        return res.send({success:true,msg:"Changed"})
+                        return res.send({success:true,msg:"Changed"}).status(200)
                     }
                     else{
-                        return await res.send({success:false,msg:"Passwords didnt match"})
+                        return await res.send({success:false,msg:"Passwords didnt match"}).status(400)
                     }
                 })
                 return
             case 'profilePic':
                 if(!req.file)
-                    return res.send({success:false,msg:'File not found'})
+                    return res.send({success:false,msg:'File not found'}).status(400)
                 let buffer = req.file.buffer
                 let cldstrm =  cloudinary.uploader.upload_stream({
                     public_id:`${userName}/profilePic`,
@@ -87,12 +88,12 @@ const changeCredentials = async(req,res)=>{
                 },async(err,response)=>{
                     let URL = response.secure_url;
                     await userDB.doc(userName).update({image:URL})
-                    return res.send({success:true,msg:"Changed"})
+                    return res.send({success:true,msg:"Changed"}).status(200)
                 })
                 return streamify.createReadStream(buffer).pipe(cldstrm)
             case "banner":
                 if(!req.file)
-                    return res.send({success:false,msg:'File not found'})
+                    return res.send({success:false,msg:'File not found'}).status(400)
                     let bufferB = req.file.buffer
                     let cldstrmB =  cloudinary.uploader.upload_stream({
                         public_id:`${userName}/banner`,
@@ -100,7 +101,7 @@ const changeCredentials = async(req,res)=>{
                     },async(err,response)=>{
                         let URL = response.secure_url;
                         await userDB.doc(userName).update({banner:URL})
-                        return res.send({success:true,msg:"Changed"})
+                        return res.send({success:true,msg:"Changed"}).status(200)
                     })
                 return streamify.createReadStream(bufferB).pipe(cldstrmB)
                 case 'account':
@@ -109,7 +110,7 @@ const changeCredentials = async(req,res)=>{
                     await userDB.doc(userName).update({paypal:newPaypal})
                 if(bio.length != 0)
                     await userDB.doc(userName).set({bio:bio},{merge:true})
-                return res.send({success:true,msg:"Changed"})
+                return res.send({success:true,msg:"Changed"}).status(200)
             default:return res.send({success:false,msg:"No lol"}).status(400)
         }
     }

@@ -20,7 +20,6 @@ const Feed = () => {
             document.title = "Feed | Otnem - Share your project with the world"
             let mainResponse = await axios.get(`${baseURL}/?packet=1&attr=cat&element=${(searchParams.get('element'))?searchParams.get('element'):'all'}`)
             setPosts(mainResponse.data.posts)
-            console.log(mainResponse.data.posts)
         }
         fetchData()
     }, []);
@@ -32,9 +31,9 @@ const Feed = () => {
             response = await axios.post(`${baseURL}/removeLike`,{postNum,user})
         if(response.data.middleware)
             return window.location.href = response.data.redirect
-        if(response.data.success)
+        if(response.data.success){
             return window.location.href = `/post?postNum=${postNum}&user=${user}`
-        console.log(response)
+        }
     }
     const no = {
         marginLeft:"0vw",

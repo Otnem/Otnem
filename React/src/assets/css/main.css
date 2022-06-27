@@ -3,21 +3,21 @@ body {
     margin: 0;
     background-color: #fff;
 }
-  /*===== Hero section Style =====*/
-  
-  .hero {
+/*===== Hero section Style =====*/
+
+.hero {
     min-height: calc(100vh - var(--header-height));
     position: relative;
-  }
-  
-  .hero .text_content h2 {
+}
+
+.hero .text_content h2 {
     font-weight: 700;
     font-size: var(--h1-font-size);
     line-height: 70px;
     letter-spacing: 0.02em;
     color: var(--Black-color);
-  }
-  
+}
+
 
 .small {
     font-size: 80%;
@@ -37,7 +37,7 @@ body {
 }
 
 .right {
-   
+
 }
 
 .left, .right{
@@ -54,7 +54,7 @@ body {
 
 .alert-danger {
     color: #fc5555;
-  
+
 }
 
 
@@ -88,13 +88,13 @@ form .main-mockup {
     position: fixed;
 
     display: flex;
- 
-  
+
+
     z-index: -1;
     height: 240px;
-  }
+}
 
-  
+
 
 
 
@@ -217,7 +217,7 @@ label {
         flex-direction: row;
         height: 100vh;
     }
-   
+
     .left,
     .right {
         display: flex;
@@ -234,6 +234,6 @@ label {
         top: 0;
         bottom: 0;
         z-index: -1;
-      }
+    }
     
 }

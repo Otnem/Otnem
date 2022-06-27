@@ -32,7 +32,7 @@ const registerPost= async(req,res)=>{
         password:hashedPasswrod,
         image:'https://media.istockphoto.com/vectors/anonymity-concept-icon-in-neon-line-style-vector-id1259924572?k=20&m=1259924572&s=612x612&w=0&h=Xeii8p8hOLrH84PO4LJgse5VT7YSdkQY_LeZOjy-QD4=',
         paypal:"www.paypal.com/",
-        banner:"http://localhost:1000/assets/img/grid.jpg"
+        banner:"https://images.pexels.com/photos/1525041/pexels-photo-1525041.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
         }
         let docref = await unVerifiedDB.add(userInfoObj)
         let transporter = emailer.createTransport({
