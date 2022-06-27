@@ -8,39 +8,18 @@ import { faMessage }  from '@fortawesome/free-solid-svg-icons';
 import { faCircleCheck }  from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios'
 import '../assets/css/boostrap.min.css'
-import image from '../assets/images/image.jpg'
-import profile from '../assets/images/profile.jpg'
 
 const Feed = () => {
     const baseURL = `http://localhost:1000`
     const [posts,setPosts] = useState([])
-    useEffect(async() => {
-        axios.defaults.withCredentials = true
-        document.title = "Feed | Otnem - Share your project with the world"
-        let mainResponse = await axios.get(`${baseURL}/?packet=1`)
-        setPosts(mainResponse.data.posts)
-        setPosts([{
-            postName:'lol',
-            user:"lol",
-            likes:20,
-            comments:['lsdas','lsdas','lsdas','lsdas'],
-            verified:false,
-            profilePic:profile,
-            img:image,
-            title:"title test",
-            time:'1000'
-        },
-        {
-            postName:'lol',
-            user:"Pravith B A",
-            likes:80,
-            comments:['lsdas','lsdas','lsdas','lsdas','lsdas','lsdas','lsdas','lsdas','lsdas','lsdas','lsdas','lsdas',],
-            verified:true,
-            profilePic:profile,
-            img:image,
-            title:"title test",
-            time:1000
-        }])
+    useEffect(() => {
+        async function fetchData(){
+            axios.defaults.withCredentials = true
+            document.title = "Feed | Otnem - Share your project with the world"
+            let mainResponse = await axios.get(`${baseURL}/?packet=1`)
+            setPosts(mainResponse.data.posts)
+        }
+        fetchData()
     }, []);
     
     const no = {
@@ -85,30 +64,30 @@ const Feed = () => {
     }\
     "}
     </style>
-    <div class="containerx" >
-        <div class="Selector_Links">
-        <div class="SC_Item" onclick='location.href = `/?attr=cat&&element=${this.getAttribute("data-type")}`' id="SC_IT" data-type="all" >
+    <div className="containerx" >
+        <div className="Selector_Links">
+        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr`}} id="SC_IT" data-type="all" >
             <p >All</p>
         </div>
-        <div class="SC_Item" onclick='location.href = `/?attr=cat&&element=${this.getAttribute("data-type")}`' id="SC_IT" data-type="art">
+        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=art`}} id="SC_IT" data-type="art">
             <p>Art</p>
         </div>
-        <div class="SC_Item" onclick='location.href = `/?attr=cat&&element=${this.getAttribute("data-type")}`' id="SC_IT" data-type="tech">
+        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=tech`}} id="SC_IT" data-type="tech">
             <p>Tech</p>
         </div>
-        <div class="SC_Item" onclick='location.href = `/?attr=cat&&element=${this.getAttribute("data-type")}`' id="SC_IT" data-type="uiux">
+        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=uxui`}} id="SC_IT" data-type="uiux">
             <p>UI/UX</p>
         </div>
-        <div class="SC_Item" onclick='location.href = `/?attr=cat&&element=${this.getAttribute("data-type")}`' id="SC_IT" data-type="amvs">
+        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=amvs`}} id="SC_IT" data-type="amvs">
             <p>Amvs</p>
         </div>
-        <div class="SC_Item" onclick='location.href = `/?attr=cat&&element=${this.getAttribute("data-type")}`' id="SC_IT" data-type="photoshop">
+        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=photoshop`}} id="SC_IT" data-type="photoshop">
             <p>Photoshop</p>
         </div>
-        <div class="SC_Item" onclick='location.href = `/?attr=cat&&element=${this.getAttribute("data-type")}`' id="SC_IT" data-type="games">
+        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=games`}} id="SC_IT" data-type="games">
             <p>Games</p>
         </div>
-        <div class="SC_Item" onclick='location.href = `/?attr=cat&&element=${this.getAttribute("data-type")}`' id="SC_IT" data-type="other">
+        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=other`}} id="SC_IT" data-type="other">
             <p>Other</p>
         </div>
         </div>
@@ -116,50 +95,54 @@ const Feed = () => {
     <div style={no}>
     <h2>Sorry, No Posts Available!</h2>
     </div>
-    <div class="posts_cards">
-    <div class="container-fluid"   >
-    <div class="grid_posts" >
+    <div className="posts_cards">
+    <div className="container-fluid"   >
+    <div className="grid_posts" >
     {posts.map(post=>{
         return(
-            <div class="full_post" style={{height:'100%'}}>
+            <div key={post.postName} className="full_post" style={{height:'100%'}}>
             <a style={postStyle} href={`/post?postNum=${post.postName}&&user=${post.user}`}></a>
-            <a> <div class="post_box" data-type="art">
-                <div class="index_image" >
-                    <img src={image} width="100%" height="100%" alt="Image Not Available"></img>
+            <div className="post_box" data-type="art">
+                <div className="index_image" >
+                    <img src={post.img} width="100%" height="100%" alt="Image Not Available"></img>
                 </div>
-                <div class="top">
-                    <div class="items">
-                    <a style={iconStyle} class="item sned"  href={`/chatRoom?user=${post.user}&redirect=true`}>  <FontAwesomeIcon  icon={faMessage} /> </a>
-                    <div style={iconStyle} class="item star"  id="{{postName}}-id" postNum="{{postName}}" user="{{userName}}" onclick="removeLike('{{user}}','{{postName}}')">
-                    <FontAwesomeIcon  icon={faHeart} />
-                    </div>
-                    {/* <div style={iconStyle} class="item star" id="{{postName}}-id" postNum="{{postName}}" user="{{userName}}" onclick="addLike('{{user}}','{{postName}}')">
-                    <FontAwesomeIcon  icon={faHeartBroken} />
-                    </div> */}
+                <div className="top">
+                    <div className="items">
+                    <a style={iconStyle} className="item sned"  href={`/chat?user=${post.user}&redirect=true`}>  <FontAwesomeIcon  icon={faMessage} /> </a>
+                    {
+                        (post.isLiked)?
+                        (<div style={iconStyle} className="item star">
+                        <FontAwesomeIcon  icon={faHeartBroken} />
+                        </div>)
+                        :
+                        (<div style={iconStyle} className="item star" >
+                        <FontAwesomeIcon  icon={faHeart} />
+                        </div>)
+                    }
                     </div>
                 </div>
-                <div class="bottom">
-                <div class="UserDetails" style={{cursor:'pointer'}} onclick="window.location.href = '/profile?user={{userName}}'">
-                    <div class="UserImage">
+                <div className="bottom">
+                <a className="UserDetails" style={{cursor:'pointer'}} href={`/profile?user=${post.user}`}>
+                    <div className="UserImage">
                     <img src={post.profilePic} alt="User Profile Image"></img>
                     </div>
-                    <div class="name_time">
-                    <div class="name">
+                    <div className="name_time">
+                    <div className="name">
                         <h6 style={{width:'auto',height:'1.3em',overflow:'hidden !important',textOverflow:'ellipsis',whiteSpace: 'nowrap' ,textAlign:'end' , marginRight:'0.5em',fontWeight:'bold'}}>{post.user}</h6>
-                        <FontAwesomeIcon icon={(post.verified)?faCircleCheck:""} />
+                        {(post.verified)?(<FontAwesomeIcon icon={(post.verified)?faCircleCheck:""} />):""}
                     </div>
-                    <h6>{Date.parse(post.time)}</h6>
+                    <h6>{post.date}</h6>
                     </div>
-                </div>
-                    <div class="post_name">
+                </a>
+                    <div className="post_name">
                         <h5 style={{width:'4rem',height:'1.3em',overflow:'hidden !important',textOverflow:'ellipsis',whiteSpace: 'nowrap' ,textAlign:'end' , }}> </h5>
                     </div>
                 </div>
-            </div></a>
-            <div class="bottom-post">
+            </div>
+            <div className="bottom-post">
             <div>
                 <h2></h2>
-                <p style={{color:"#9e9ea7",textAlign:'center',fontWeight:'bold'}}> {(post.likes)} Likes | {post.comments.length} Comments </p>
+                <p style={{color:"#9e9ea7",textAlign:'center',fontWeight:'bold'}}> {(post.likes)} Likes | {post.commentsQty} Comments </p>
             </div>
             </div>
         </div>

@@ -81,6 +81,12 @@
 		.search-sug:hover{\
 			color:rgb(26, 243, 30)\
 		}\
+		.chat-messages{\
+			height:64.5vh;\
+			display: flex;\
+			flex-direction: column;\
+			overflow-y: scroll;\
+			}\
 	"
 	}</style>
 		<Navbar>

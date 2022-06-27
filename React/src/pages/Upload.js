@@ -15,33 +15,33 @@ import '../assets/css/all.css'
 
 const Upload = () => {
     const history = useNavigate()
-	useEffect(() => {
-		
-	  }, []);
-      
-  return (
+    useEffect(() => {
+        
+    }, []);
+    
+return (
     <div>
-      <style>{"\
-     @media screen and (max-width: 991px)  {\
-      .navbar__  {\
-          display:none;\
-      }\
-      .navbar_mobile {\
+    <style>{"\
+    @media screen and (max-width: 991px)  {\
+    .navbar__  {\
+        display:none;\
+    }\
+    .navbar_mobile {\
         display: none;\
-      }\
-      body {\
-          padding-bottom: 0;\
-          padding-top:0px\
-      }\
-	  .content{\
+    }\
+    body {\
+        padding-bottom: 0;\
         padding-top:0px\
-	  }\
-  }\
-  body {\
+    }\
+    .content{\
+        padding-top:0px\
+    }\
+}\
+body {\
     padding-bottom:20px;\
     padding-top:0px\
-  }\
-  #loading-c{\
+}\
+#loading-c{\
     width: 100vw;\
     height:100vh;\
     z-index: 10;\
@@ -205,12 +205,12 @@ h2{\
 .fa-camera{\
     font-size: 5rem;\
 }\
-   "
-  }</style>
-      <Navbar>
+"
+}</style>
+    <Navbar>
 
-      </Navbar>
-      <div class="top d-lg-none d-flex">
+    </Navbar>
+    <div class="top d-lg-none d-flex">
     <div class="container bg-white">
     <div class="row justify-content-between">
         <div class="col-5" style={{marginLeft:"20px",fontSize:"40px"}}>
@@ -265,7 +265,7 @@ h2{\
     </div>
 
     </div>
-  )
+)
 }
 
 export default Upload
