@@ -317,9 +317,15 @@ const unfollowUser = async(req,res)=>{
 }
 const getUserApi = async(req,res)=>{
     try{
-        if(await checkIfUserExists(req.query.user) && req.query.user)
-            return res.send(await getUser(req.query.user))
-        return res.send("No user found") 
+        let userName = req.query.user
+        if(await checkIfUserExists(userName) && userName)
+            return res.send({success:true,...await getUser(userName)}).status(200)
+        else{
+            userName = await getUserName(req)
+            if(userName)
+                return res.send({success:true,...await getUser(userName)}).status(200)
+        }
+        return res.send({success:false,msg:"No user found"}).status(400)
     }catch(err){
         console.log(err)
     }    

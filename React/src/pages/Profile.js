@@ -14,6 +14,8 @@ import axios from 'axios';
 import { useSearchParams } from 'react-router-dom';
 
 const Profile = () => {
+    let loadBanner = 'https://i.gifer.com/PG23.gif'
+    let loadPfp = 'https://i.gifer.com/PG23.gif'
     const baseURL = `http://localhost:1000`
     const [user,setUser] = useState({})
     const [posts,setPosts] = useState([])
@@ -23,13 +25,11 @@ const Profile = () => {
             axios.defaults.withCredentials = true
             document.title = "Profile | Otnem - Share your project with the world"
             let mainResponse = await axios.get(`${baseURL}/profile?packet=1&user=${(searchParams.get('user'))?searchParams.get('user'):''}`)
-            console.log(mainResponse,searchParams.get('user'),`${baseURL}/profile?packet=1&user=${searchParams.get('user')}`)
             if(mainResponse.data.redirect)
                 window.location.href = mainResponse.data.redirect
             let userData = mainResponse.data.userObj
             setUser({...userData})
             setPosts(mainResponse.data.userObj.posts)
-            console.log(user,userData,posts)
         }
         fetchData()
     }, []);
@@ -44,7 +44,6 @@ const Profile = () => {
         if(response.data.success){
             return window.location.href = `/post?postNum=${postNum}&user=${user}`
         }
-        console.log(response)
     }
     const cover = {
         paddingLeft:"0px",
@@ -80,18 +79,16 @@ const Profile = () => {
     const iconStyle = {
         zIndex:"3"
     }
-    if(!user.userName)
-    return(
-        <>
-            {/* <Navbar></Navbar> */}
-            <h1>Loading...</h1>
-        </>
-    )
-    else
+    // if(!user.userName)
+    // return(
+    //     <>
+    //         {/* <Navbar></Navbar> */}
+    //         <h1>Loading...</h1>
+    //     </>
+    // )
+    // else
     return (
-        
     <div>
-        
     <style>{"\
         @media screen and (max-width: 991px){\
         .navbar__ {\
@@ -102,23 +99,21 @@ const Profile = () => {
         color:#23F649\
         }\
     "
-
     }</style>
-        
         <Navbar></Navbar>
         <div className="posts_cards mb-5 mt-lg-6 ">
     <div className="container-fluid " >
         <div className="row align-items-center">
             <div className="col-12" style={cover}>
             <div className="cover" >
-                <img src={user.banner} />
+                <img src={(user.banner)?user.banner:loadBanner} />
             </div>
             </div>
             <div className="col-10 col-lg-5 mt--4 " style={{ margin: "-4rem auto 0 auto"}} >
             <div className="user">
                 <div className="pd-left">
                 <div className="pd-row">
-                    <img src={user.profilePic} className="pd-image" alt="Profile Image" style={{objectFit:"cover",width: "5em",height: "5em",border: "1px solid #DBDBDB"}}></img>
+                    <img src={(user.profilePic)?user.profilePic:loadPfp} className="pd-image" alt="Profile Image" style={{objectFit:"cover",width: "5em",height: "5em",border: "1px solid #DBDBDB"}}></img>
                 <div>
                     <div style={{display:"flex",gap:"0.5rem",placeItems:"center",justifyContent:'center',alignItems:'center'}}>
                     <h3 style={{marginBottom:"0",fontSize:'25px',fontWeight:'bold'}}>{user.userName}</h3>
@@ -137,27 +132,23 @@ const Profile = () => {
                     <FontAwesomeIcon icon={faGear} className="hover:text-white" />
                     </div>
                     </a>
-            
                     <noscript id="userName" name="{{userName}}"></noscript>
-                        <div className="followBtn" style={{cursor: "pointer"}} onClick="follow()">
+                        {/* <div className="followBtn" style={{cursor: "pointer"}} onClick="follow()">
                         <i className="fa-solid fa-user-plus"></i>
+                        <FontAwesomeIcon icon={userPlus}/>
                         </div>
-                
                         <div className="unFollowBtn" style={{cursor: "pointer"}} onClick="unFollow()">
                         <i className="fa-solid fa-user-slash"></i>
-                        </div>
-                    
+                        </div> */}
                 </div>
             </div>
             </div>
         </div>
-        
         </div>
         
     </div>
     <div className="posts_cards">
     <div className="container-fluid"   >
-        
     <div style={no}>
     <h2>Sorry, No Posts Available!</h2>
     </div>
@@ -168,11 +159,11 @@ const Profile = () => {
             <a style={postStyle} href={`/post?postNum=${post.postName}&&user=${post.user}`}></a>
             <div className="post_box" data-type="art">
             <div className="index_image" >
-                <img src={post.img} s width="100%" height="100%" alt="Image Not Available"></img>
+                <img src={post.img} width="100%" height="100%" alt="Image Not Available"></img>
             </div>
             <div className="top">
                 <div className="items">
-                    <div className="item sned"  onClick="location.href = `/chatRoom?user={{userName}}&redirect=true`">  <FontAwesomeIcon icon={faMessage} /> </div>
+                    <a className="item sned" href={`/chat?user=${user.userName}&redirect=true`}>  <FontAwesomeIcon icon={faMessage} /> </a>
                     {
                         (post.isLiked)?
                         (<div style={iconStyle} className="item star" onClick={()=>{changeLike(false,post.id,post.name)}}>

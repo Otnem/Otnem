@@ -3,7 +3,6 @@ const profile = async(req,res)=>{
         let pacNum = (typeof req.query.packet === 'number' && req.query.packet > 0)?req.query.packet:1
         let userName = await getUserName(req)
         let query = await req.query
-        console.log(userName,query.user)
         if(query.user && !await checkIfUserExists(query.user))
             return res.send({success:false,msg:"User doesn't exist"}).status(406)
         if(!query.user && !userName)
