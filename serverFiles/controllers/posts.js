@@ -42,7 +42,7 @@ const redPage = (req,res)=>{
 const mainPage = async(req,res)=>{
     try{
         let pacNum = (typeof req.query.packet === 'number' && req.query.packet > 0)?req.query.packet:1
-        const {attr,element} = await req.query
+        let {attr,element} = await req.query
         let userName = await getUserName(req)
         let loggedIn = false
         let userObj = {profilePic:""}
@@ -55,7 +55,7 @@ const mainPage = async(req,res)=>{
         if(finalArray[0])
             isPost = true
         finalArray.forEach(post=>{(post['likesArray'].includes(userName))?post['isLiked']=true:post['isLiked']=false})
-        res.send({isPost:isPost,len:finalArray.length,posts:finalArray,loggedIn:loggedIn,profilePic:userObj.profilePic,isAuth:req.isAuthenticated()})
+        res.send({isPost:isPost,len:finalArray.length,posts:finalArray,loggedIn:loggedIn,profilePic:userObj.profilePic,isAuth:req.isAuthenticated()}).status(200)
     }catch(err){
         console.log(err)
     }

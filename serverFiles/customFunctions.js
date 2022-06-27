@@ -28,7 +28,6 @@ async function checkIfUserExists(user){
     return res
 }
 async function checkElegible(user,checkUser){
-    return true
     if(checkUser == user)return true
     let visibality = (await userDB.doc(user).get()).data()
     visibality = visibality.visibality || "public"

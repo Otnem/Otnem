@@ -8,15 +8,17 @@ import { faMessage }  from '@fortawesome/free-solid-svg-icons';
 import { faCircleCheck }  from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios'
 import '../assets/css/boostrap.min.css'
+import { useSearchParams } from 'react-router-dom';
 
 const Feed = () => {
     const baseURL = `http://localhost:1000`
     const [posts,setPosts] = useState([])
+    const [searchParams, setSearchParams] = useSearchParams()
     useEffect(() => {
         async function fetchData(){
             axios.defaults.withCredentials = true
             document.title = "Feed | Otnem - Share your project with the world"
-            let mainResponse = await axios.get(`${baseURL}/?packet=1`)
+            let mainResponse = await axios.get(`${baseURL}/?packet=1&attr=cat&element=${(searchParams.get('element'))?searchParams.get('element'):'all'}`)
             setPosts(mainResponse.data.posts)
         }
         fetchData()
@@ -38,7 +40,11 @@ const Feed = () => {
         paddingTop:'85px'
     };
     const active ={
-        background:'#23F649'
+        background:'#23F649',
+        color:'white'
+    }
+    const noActive = {
+        fontSize:'1rem'
     }
     const postStyle = {
         width:"20em",
@@ -64,30 +70,30 @@ const Feed = () => {
     }\
     "}
     </style>
-    <div className="containerx" >
+    <div className="container" >
         <div className="Selector_Links">
-        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr`}} id="SC_IT" data-type="all" >
+        <div className="SC_Item" style={(!searchParams.get('element'))?active:noActive} onClick={()=>{window.location.href = `/?attr`}} id="SC_IT" data-type="all" >
             <p >All</p>
         </div>
-        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=art`}} id="SC_IT" data-type="art">
+        <div className="SC_Item" style={(searchParams.get('element')==='art')?active:noActive} onClick={()=>{window.location.href = `/?attr=cat&&element=art`}} id="SC_IT" data-type="art">
             <p>Art</p>
         </div>
-        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=tech`}} id="SC_IT" data-type="tech">
+        <div className="SC_Item" style={(searchParams.get('element')==='tech')?active:noActive} onClick={()=>{window.location.href = `/?attr=cat&&element=tech`}} id="SC_IT" data-type="tech">
             <p>Tech</p>
         </div>
-        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=uxui`}} id="SC_IT" data-type="uiux">
+        <div className="SC_Item" style={(searchParams.get('element')==='uxui')?active:noActive} onClick={()=>{window.location.href = `/?attr=cat&&element=uxui`}} id="SC_IT" data-type="uiux">
             <p>UI/UX</p>
         </div>
-        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=amvs`}} id="SC_IT" data-type="amvs">
+        <div className="SC_Item" style={(searchParams.get('element')==='amvs')?active:noActive} onClick={()=>{window.location.href = `/?attr=cat&&element=amvs`}} id="SC_IT" data-type="amvs">
             <p>Amvs</p>
         </div>
-        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=photoshop`}} id="SC_IT" data-type="photoshop">
+        <div className="SC_Item" style={(searchParams.get('element')==='photoshop')?active:noActive} onClick={()=>{window.location.href = `/?attr=cat&&element=photoshop`}} id="SC_IT" data-type="photoshop">
             <p>Photoshop</p>
         </div>
-        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=games`}} id="SC_IT" data-type="games">
+        <div className="SC_Item" style={(searchParams.get('element')==='games')?active:noActive} onClick={()=>{window.location.href = `/?attr=cat&&element=games`}} id="SC_IT" data-type="games">
             <p>Games</p>
         </div>
-        <div className="SC_Item" onClick={()=>{window.location.href = `/?attr=cat&&element=other`}} id="SC_IT" data-type="other">
+        <div className="SC_Item" style={(searchParams.get('element')==='other')?active:noActive} onClick={()=>{window.location.href = `/?attr=cat&&element=other`}} id="SC_IT" data-type="other">
             <p>Other</p>
         </div>
         </div>
@@ -141,7 +147,6 @@ const Feed = () => {
             </div>
             <div className="bottom-post">
             <div>
-                <h2></h2>
                 <p style={{color:"#9e9ea7",textAlign:'center',fontWeight:'bold'}}> {(post.likes)} Likes | {post.commentsQty} Comments </p>
             </div>
             </div>
