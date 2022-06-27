@@ -20,10 +20,22 @@ const Feed = () => {
             document.title = "Feed | Otnem - Share your project with the world"
             let mainResponse = await axios.get(`${baseURL}/?packet=1&attr=cat&element=${(searchParams.get('element'))?searchParams.get('element'):'all'}`)
             setPosts(mainResponse.data.posts)
+            console.log(mainResponse.data.posts)
         }
         fetchData()
     }, []);
-    
+    const changeLike = async(isLiked,postNum,user)=>{
+        let response
+        if(isLiked)
+            response = await axios.post(`${baseURL}/addLike`,{postNum,user})
+        else
+            response = await axios.post(`${baseURL}/removeLike`,{postNum,user})
+        if(response.data.middleware)
+            return window.location.href = response.data.redirect
+        if(response.data.success)
+            return window.location.href = `/post?postNum=${postNum}&user=${user}`
+        console.log(response)
+    }
     const no = {
         marginLeft:"0vw",
         fontSize:"1.5em",
@@ -104,7 +116,7 @@ const Feed = () => {
     <div className="posts_cards">
     <div className="container-fluid"   >
     <div className="grid_posts" >
-    {posts.map(post=>{
+    {posts.map((post)=>{
         return(
             <div key={post.postName} className="full_post" style={{height:'100%'}}>
             <a style={postStyle} href={`/post?postNum=${post.postName}&&user=${post.user}`}></a>
@@ -117,11 +129,11 @@ const Feed = () => {
                     <a style={iconStyle} className="item sned"  href={`/chat?user=${post.user}&redirect=true`}>  <FontAwesomeIcon  icon={faMessage} /> </a>
                     {
                         (post.isLiked)?
-                        (<div style={iconStyle} className="item star">
+                        (<div style={iconStyle} className="item star" onClick={()=>{changeLike(false,post.postName,post.user)}}>
                         <FontAwesomeIcon  icon={faHeartBroken} />
                         </div>)
                         :
-                        (<div style={iconStyle} className="item star" >
+                        (<div style={iconStyle} className="item star" onClick={()=>{changeLike(true,post.postName,post.user)}}>
                         <FontAwesomeIcon  icon={faHeart} />
                         </div>)
                     }

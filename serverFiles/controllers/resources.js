@@ -331,12 +331,15 @@ const addLike = async(req,res)=>{
     try{
         const userName = await getUserName(req)
         const {user,postNum} = await req.body
+        if(!user&&!postNum)
+            return res.send({success:false,msg:"Missing Fields"}).status(400)
         if((await userDB.doc(user).collection('posts').doc(postNum).collection('likes').where('user','==',userName).get()).docs[0])
-            return res.send({success:false,msg:"User already liked"})
-        await userDB.doc(user).collection('posts').doc(postNum).collection('likes').add({user:userName})
-        await postDB.doc(postNum).collection('likes').add({user:userName})
-        await notify(user,`${userName} liked a post`,`Check out your post`,`/postPreview?user=${user}&&postNum=${postNum}`,user.profilePic)
-        return res.send({success:true,msg:"Like Added"})
+            return res.send({success:false,msg:"User already liked"}).status(304)
+        await userDB.doc(user).collection('posts').doc(postNum).collection('likes').add({user:userName}).then(async response=>{
+            await postDB.doc(postNum).collection('likes').doc(response.id).set({user:userName},{merge:true})
+            await notify(user,`${userName} liked a post`,`Check out your post`,`/postPreview?user=${user}&&postNum=${postNum}`,user.profilePic)
+            return res.send({success:true,msg:"Like Added"}).status(201)
+        })
     }catch(err){
         console.log(err)
     }
@@ -345,6 +348,8 @@ const removeLike = async(req,res)=>{
     try{
         const userName = await getUserName(req)
         const {user,postNum} = await req.body
+        if(!user&&!postNum)
+            return res.send({success:false,msg:"Missing Fields"}).status(400)
         let likeDoc = (await userDB.doc(user).collection('posts').doc(postNum).collection('likes').where('user','==',userName).get()).docs[0]
         if(!likeDoc)
             return res.send({success:false,msg:"User didn't like"})
