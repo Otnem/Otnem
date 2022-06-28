@@ -10,12 +10,11 @@ const upload = mutler()
 const cors = require('cors')
 
 router.use(cors({"origin": `http://localhost:3000`,"methods": "GET,HEAD,PUT,PATCH,POST,DELETE", "allowedHeaders":'X-Requested-With, Content-Type, Accept, Origin, Authorization', "credentials":true}))
-// router.use(cors({"origin": `https://otnemreal.vercel.app`,"methods": "GET,HEAD,PUT,PATCH,POST,DELETE", "allowedHeaders":'X-Requested-With, Content-Type, Accept, Origin, Authorization', "credentials":true}))
 router.get('/',mainPage)
 router.get('/login',checkNotAuth,login)
 router.get('/register',checkNotAuth,register)
 router.get('/post',checkAuth,uploadPostPage)
-router.get('/postPreview',postPreviewPage)
+router.get('/postData',postPreviewPage)
 router.get('/search',searchPage)
 router.get('/profile',profile)
 router.get('/verify',checkNotAuth,verifyUser)
@@ -51,7 +50,6 @@ function checkAuth(req,res,next){
         next()
     }
     else{
-        console.log(req.session)
         return res.send({success:false,redirect:'/login',middleware:true}).status(401)
     }
 }
@@ -60,7 +58,6 @@ function checkNotAuth(req,res,next){
         next()
     }
     else{
-        console.log(req.session)
         return res.send({success:false,redirect:'/',middleware:true}).status(401)
     }
 }

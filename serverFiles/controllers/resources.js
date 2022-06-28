@@ -91,21 +91,28 @@ const postComments = async(req,res)=>{
     try{
         let userName = await getUserName(req)
         if(!userName)
-            return res.send("notAuth")
+            return res.send({success:false,redirect:'/login'})
         let {comment,postNum,postUser} = await req.body
         let userCheck = (await userDB.doc(postUser).get()).data()
         if(!userCheck)
-            return res.send({success:false})
+            return res.send({success:false,msg:"User not available"}).status(402)
         let postCheck = (await userDB.doc(postUser).collection('posts').doc(postNum).get()).data()
         if(!postCheck)
-            return res.send({success:false})
+            return res.send({success:false,msg:"Post not available"}).status(400)
         if(!comment || !postNum || !postUser)
-            return res.send({success:false})
+            return res.send({success:false,msg:"Missing arguments"}).status(400)
         if(!await checkElegible(userName,postUser))
-            return res.send({success:false})
-        await userDB.doc(`${postUser}`).collection('posts').doc(postNum).collection('comments').doc().set({user:userName,content:comment},{merge:true})
-        await postDB.doc(postNum).collection('comments').doc().set({user:userName,content:comment},{merge:true})
-        res.send(postNum)
+            return res.send({success:false,msg:"User not eligeable"}.status(400))
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0')
+        let mm = String(today.getMonth() + 1).padStart(2, '0')
+        let yyyy = today.getFullYear()
+        today = dd + '/' + mm + '/' + yyyy    
+        await userDB.doc(`${postUser}`).collection('posts').doc(postNum).collection('comments').add({user:userName,content:comment,date:today}).then(async response=>{
+            await postDB.doc(postNum).collection('comments').doc(response.id).set({user:userName,content:comment,date:today},{merge:true})
+            let userData = await getUser(userName)
+            return res.send({success:true,postNum,userData,commentNum:response.id}).status(200)
+        })
     }
     catch(err){
         console.log(err)
@@ -116,10 +123,10 @@ const deleteComment = async (req,res)=>{
         const userName = await getUserName(req)
         const{commentNum,postNum,postUser,commentUser} = await req.body
         if(userName != commentUser)
-            return res.send({status:400,success:false})
+            return res.send({success:false}).status(400)
         let result = await userDB.doc(postUser).collection('posts').doc(postNum).collection('comments').doc(commentNum).delete()
         await postDB.doc(postNum).collection('comments').doc(commentNum).delete()
-        res.send(result)
+        res.send({success:true,result}).status(200)
     }
     catch(err){
         console.log(err)
@@ -209,13 +216,13 @@ const postPreviewPage = async(req,res)=>{
         if(userName == query.user)
             isDeletable = true
         if(!query.user || !query.postNum)
-            return res.send({success:false})
+            return res.send({success:false,msg:"Arguments Missing"})
         let userCheck = (await userDB.doc(query.user).get()).data()
         if(!userCheck)
-        return res.send({success:false})
+        return res.send({success:false,msg:"User not found"})
         let postCheck = (await userDB.doc(query.user).collection('posts').doc(query.postNum).get()).data()
         if(!postCheck)
-        return res.send({success:false})
+        return res.send({success:false,msg:"No Post Found"})
         let postUser = await getUser(query.user)
         let profilePic = ""
         let paypal = postUser.paypal
@@ -224,7 +231,7 @@ const postPreviewPage = async(req,res)=>{
             profilePic = user.profilePic
         }
         if(!query.user || !query.postNum)
-            return res.send("No Post Found")
+            return res.send({success:false,msg:"No Post Found"})
         let isComment = false
         let commentsArray = []
         let postData = (await userDB.doc(query.user).collection('posts').doc(query.postNum).get()).data()
@@ -269,8 +276,7 @@ const postPreviewPage = async(req,res)=>{
             field['paypal'] = paypal
             return field
         })
-        res.send({layout:'indexLayout',isLiked,likes,commentsQty:commentSnapshot.size,verified:postUser.verified,isDeletable:isDeletable,posterProfilePic:postUser.profilePic,date:postData.date,postUser:query.user,commentsArray:commentsArray,isComment:isComment,tags:postData.tags,fields:postData.fields,err:err,postNum:query.postNum,isAuth:req.isAuthenticated(),profilePic:profilePic})
-        
+        return res.send({success:true,isLiked,likes,commentsQty:commentSnapshot.size,verified:postUser.verified,isDeletable:isDeletable,posterProfilePic:postUser.profilePic,date:postData.date,postUser:query.user,commentsArray:commentsArray,isComment:isComment,tags:postData.tags,fields:postData.fields,err:err,postNum:query.postNum,profilePic:profilePic})
     } catch (error) {
         console.log(error)
     }
@@ -384,5 +390,6 @@ const getLikes = async(req,res)=>{
     }
 }
 module.exports = {searchPage,uploadPostPage,checkIfUserExistsRoute,deletePost,postComments,deleteComment,uploadFile,postPreviewPage,followUser,unfollowUser,getUserApi,getAllUsersApi,addLike,removeLike,getLikes}
+const { response } = require('express')
 const {notify,checkIfUserExists,checkElegible,getUserName,getUser,getAllPosts,checkIfDocExists,getAllUsers} = require('../customFunctions')
 const { userDB, postDB, cloudinary, streamify, smjs} = require('./posts')

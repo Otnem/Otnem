@@ -71,7 +71,6 @@ const loginPost = async(req,res)=>{
             if(!bcResponse)
                 return res.send({success:false,msg:"Wrong Password"}).status(401)
             req.login(body,()=>{})
-            console.log(req.session)
             return res.send({success:true}).status(202)
         })
     }

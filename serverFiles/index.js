@@ -6,14 +6,19 @@ const bodyParser = require('body-parser')
 const passport = require('passport')
 const session = require('express-session')
 const flash = require('express-flash')
-const socketio = require('socket.io')
+const socketIo = require('socket.io')
 const http = require('http')
 const {chatRoomDB, userDB } = require("./controllers/posts")
 const {checkIfDocExists} = require('./customFunctions')
 const FieldValue = require('firebase-admin').firestore.FieldValue
 const app = express()
 const server = http.createServer(app)
-const io = socketio(server)
+const io = socketIo(server,{cors:{
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type","Authorization"],
+    credentials: true
+}})
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
