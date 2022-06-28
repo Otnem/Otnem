@@ -20,8 +20,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 const sessionMiddleWare = session({
     secret: process.env.PASSPORT_SCERET,
     resave: false,
-    saveUninitialized: true,
-    name:'__session'
+    saveUninitialized: true
 })
 const wrap = middleWare => (socket,next) => middleWare(socket.request,{},next)
 app.use(sessionMiddleWare)
