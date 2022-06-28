@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Otnem/Otnem/tree/main/React/static/css/main.0fe017a9.css",
+    "main.js": "/Otnem/Otnem/tree/main/React/static/js/main.5bbc530c.js",
+    "static/media/video.mp4": "/Otnem/Otnem/tree/main/React/static/media/video.c3e6f851125d60cf9b3f.mp4",
+    "static/media/profile.jpg": "/Otnem/Otnem/tree/main/React/static/media/profile.e3c6271b87d26f7ea24d.jpg",
+    "static/media/image.jpg": "/Otnem/Otnem/tree/main/React/static/media/image.79f8a66b2af56c437f56.jpg",
+    "index.html": "/Otnem/Otnem/tree/main/React/index.html",
+    "main.0fe017a9.css.map": "/Otnem/Otnem/tree/main/React/static/css/main.0fe017a9.css.map",
+    "main.5bbc530c.js.map": "/Otnem/Otnem/tree/main/React/static/js/main.5bbc530c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0fe017a9.css",
+    "static/js/main.5bbc530c.js"
+  ]
+}

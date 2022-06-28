@@ -5,6 +5,7 @@ const profile = async(req,res)=>{
         let query = await req.query
         if(query.user === '' && userName)
             query.user = userName
+        console.log(userName,req.session)
         if(!query.user && !userName)
             return res.send({success:false,msg:"UnAuthenticated",redirect:'/login'}).status(401)
         if(query.user && !await checkIfUserExists(query.user))
