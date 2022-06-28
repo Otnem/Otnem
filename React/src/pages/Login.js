@@ -27,8 +27,8 @@ const Login = () => {
 	const login = async(e)=>{
 		e.preventDefault()
 		let loginResponse = await axios.post(`${baseURL}/login`,{email,password})
-		if(loginResponse.data.success === true)
-			window.location.href = `/`
+		if(loginResponse.data.success)
+			return window.history.back()
 		else
 			setErrorMsg(loginResponse.data.msg)
 	}

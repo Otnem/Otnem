@@ -3,10 +3,16 @@ const profile = async(req,res)=>{
         let pacNum = (typeof req.query.packet === 'number' && req.query.packet > 0)?req.query.packet:1
         let userName = await getUserName(req)
         let query = await req.query
-        if(query.user && !await checkIfUserExists(query.user))
-            return res.send({success:false,msg:"User doesn't exist"}).status(406)
+        
+        console.log("User doesn't exist",req.isAuthenticated())
+        console.log(userName,query.user === '' && userName)
+        if(query.user === '' && userName)
+            query.user = userName
+        console.log(query.user,req.session)
         if(!query.user && !userName)
             return res.send({success:false,msg:"UnAuthenticated",redirect:'/login'}).status(401)
+        if(query.user && !await checkIfUserExists(query.user))
+            return res.send({success:false,msg:"User doesn't exist"}).status(406)
         if(query.user)
             userName = query.user
         let userObj = await getUser(userName)
@@ -45,6 +51,7 @@ const profile = async(req,res)=>{
         let userPfp = ''
         if(req.isAuthenticated())
             userPfp = (await getUser(await getUserName(req))).profilePic
+        console.log({success:true,userObj:userObj,profilePic:userPfp,isAuth:req.isAuthenticated()})
         res.send({success:true,userObj:userObj,profilePic:userPfp,isAuth:req.isAuthenticated()}).status(200)
     }catch(err){
         console.log(err)

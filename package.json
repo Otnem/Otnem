@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "16.x"
+    "node": "^14.18.0 || >=16.4.0"
   },
   "bugs": {
     "url": "https://github.com/SingleSimha/InstaClone/issues"

@@ -279,17 +279,17 @@ const followUser = async(req,res)=>{
     try{
         const {followUserName} = await req.body
         if(!await checkIfUserExists(followUserName))
-            return res.send("User doesnt exists")
+            return res.send({success:false,msg:"User doesnt exists"}).status(401)
         let userName = await getUserName(req)
         if(followUserName == userName)
-            return res.send("You cant follow yourself... idiot!!")
+            return res.send({success:false,msg:"You cant follow yourself... idiot!!"})
         if(await checkIfDocExists(userDB.doc(userName).collection('following'),followUserName))
-            return res.send("You already follow this user")
+            return res.send({success:false,msg:"You already follow this user"})
         await userDB.doc(followUserName).collection('followers').doc(userName).set({exists:true})
         await userDB.doc(userName).collection('following').doc(followUserName).set({exists:true})
         const {profilePic} = await getUser(userName)
-        await notify(followUserName,`${userName} followed`,`${userName} has followed you on mento`,`/notifications`,`${profilePic}`)
-        res.send({msg:"Followed"})
+        await notify(followUserName,`${userName} followed`,`${userName} has followed you on Otnem`,`/notifications`,`${profilePic}`)
+        res.send({success:true,msg:"Followed"})
     }
     catch(err){
         console.log(err)
@@ -300,16 +300,16 @@ const unfollowUser = async(req,res)=>{
         const {unFollowUserName} = await req.body
         let userName = await getUserName(req)
         if(!await checkIfUserExists(unFollowUserName))
-            return res.send("User doesnt exists")
+            return res.send({success:false,msg:"User doesnt exists"})
         if(unFollowUserName == userName)
-            return res.send("You cant unfollow yourself... idiot!!")
+            return res.send({success:false,msg:"You cant unfollow yourself... idiot!!"})
         if(!await checkIfDocExists(userDB.doc(userName).collection('following'),unFollowUserName))
-            return res.send("You are not following this user")
+            return res.send({success:false,msg:"You are not following this user"})
         await userDB.doc(unFollowUserName).collection('followers').doc(userName).delete()
         await userDB.doc(userName).collection('following').doc(unFollowUserName).delete()
         const {profilePic} = await getUser(userName)
-        await notify(unFollowUserName,`${userName} unfollowed`,`${userName} has unfollowed you on mento`,`/notifications`,`${profilePic}`)
-        res.send({msg:"unFollowed"})
+        await notify(unFollowUserName,`${userName} unfollowed`,`${userName} has unfollowed you on Otnem`,`/notifications`,`${profilePic}`)
+        res.send({success:true,msg:"unFollowed"})
     }
     catch(err){
         console.log(err)

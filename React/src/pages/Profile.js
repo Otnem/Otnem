@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeader, faHeart, faUserPlus, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import { faHeartBroken }  from '@fortawesome/free-solid-svg-icons';
 import { faMessage }  from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../Navbar';
@@ -45,6 +45,20 @@ const Profile = () => {
             return window.location.href = `/post?postNum=${postNum}&user=${user}`
         }
     }
+    const changeFollow = async(follow)=>{
+        let response
+        if(follow)
+            response = await axios.post(`${baseURL}/follow`,{followUserName:user.userName})
+        else
+            response = await axios.post(`${baseURL}/unfollow`,{unFollowUserName:user.userName})
+        if(response.data.middleware)
+            return window.location.href = response.data.redirect
+        if(response.data.success)
+            window.location.reload()
+        else
+            alert(response.data.msg)
+        console.log(response)
+    }
     const cover = {
         paddingLeft:"0px",
         paddingRight:"0px"
@@ -79,14 +93,6 @@ const Profile = () => {
     const iconStyle = {
         zIndex:"3"
     }
-    // if(!user.userName)
-    // return(
-    //     <>
-    //         {/* <Navbar></Navbar> */}
-    //         <h1>Loading...</h1>
-    //     </>
-    // )
-    // else
     return (
     <div>
     <style>{"\
@@ -120,26 +126,33 @@ const Profile = () => {
                     
                     {(user.verified)?<FontAwesomeIcon style={{color:" gb(0, 191, 255)", fontSize:"24px"}}icon={faCircleCheck} />:""}
                     </div>
-                    <p> {user.followers} Followers | {user.following} Following</p>
+                    <p> {user.followers} Followers | {user.following} Following </p>
                     
                     <h4 id="bio" className='mt-1' style={{fontWeight:"bold",textAlign:"center"}}>{user.bio}</h4>
                     </div>
                 </div>
                 </div>
                 <div className="pd-right mt-3">
-                    <a href="./settings">
-                    <div className="settings">
-                    <FontAwesomeIcon icon={faGear} className="hover:text-white" />
+                    <div style={{display:'flex',gap:'0.5em'}}>
+                        {(!user.isMine)?((!user.isFollowing)?(
+                            <div style={{cursor:'pointer',hover:{color:"white"}}}>
+                                <div className="settings" onClick={()=>{changeFollow(true)}}>
+                                    <FontAwesomeIcon icon={faUserPlus} className="hover:text-white" />
+                                </div>
+                            </div>
+                        ):(
+                            <div style={{cursor:'pointer',hover:{color:"white"}}}>
+                                <div className="settings" onClick={()=>{changeFollow(false)}}>
+                                    <FontAwesomeIcon icon={faUserSlash} className="hover:text-white" />
+                                </div>
+                            </div>
+                        )):""}
+                        <a href="./settings">
+                            <div className="settings">
+                                <FontAwesomeIcon icon={faGear} className="hover:text-white" />
+                            </div>
+                        </a>
                     </div>
-                    </a>
-                    <noscript id="userName" name="{{userName}}"></noscript>
-                        {/* <div className="followBtn" style={{cursor: "pointer"}} onClick="follow()">
-                        <i className="fa-solid fa-user-plus"></i>
-                        <FontAwesomeIcon icon={userPlus}/>
-                        </div>
-                        <div className="unFollowBtn" style={{cursor: "pointer"}} onClick="unFollow()">
-                        <i className="fa-solid fa-user-slash"></i>
-                        </div> */}
                 </div>
             </div>
             </div>
@@ -155,7 +168,7 @@ const Profile = () => {
         <div className="grid_posts" >
         {posts.map(post=>{
         return(
-            <div key={post.postName} className="full_post" style={{height:'100%'}}>
+            <div key={post.id} className="full_post" style={{height:'100%'}}>
             <a style={postStyle} href={`/post?postNum=${post.postName}&&user=${post.user}`}></a>
             <div className="post_box" data-type="art">
             <div className="index_image" >
