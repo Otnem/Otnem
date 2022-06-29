@@ -46,11 +46,6 @@ const Chat = () => {
 		setChats([...chats,msg])
 	},[msg])
 	useEffect(()=>{
-		chatContainer.current.scrollTo({
-			top: chatContainer.current.scrollHeight,
-	})
-	},[chats])
-	useEffect(()=>{
 		const socket = io(baseURL,{withCredentials: true})
 		socket.emit('joinRoom',currUserData.userName)
 	},[currUserData])

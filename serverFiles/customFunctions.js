@@ -62,7 +62,7 @@ async function getUser(userName,showPassword){
             "userName":name,
             "userEmail":email,
             "profilePic":image,
-            "verified":userData.verified,
+            "verified":(userData.verified)?true:false,
             "paypal":userData.paypal,
             "banner":banner
         }

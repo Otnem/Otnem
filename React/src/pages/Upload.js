@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Navbar from '../Navbar';
@@ -12,13 +12,43 @@ import { faPlus} from '@fortawesome/free-solid-svg-icons';
 
 
 import '../assets/css/all.css'
+import axios from 'axios';
 
 const Upload = () => {
+    const baseURL = 'http://localhost:1000'
+    const [fileInp,setFileInp] = useState([])
+    const [title,setTitle] = useState([])
+    const [disc,setDisc] = useState([])
+    const [category,setCat] = useState('')
+    const [tags,setTags] = useState('')
+    const [fields,setFields] = useState(0)
+    const [isPost,setIsPost] = useState(true)
+    const contRef = useRef(null)
     const history = useNavigate()
+    useEffect(()=>{
+		contRef.current.scrollTo({
+			top: contRef.current.scrollHeight
+	})
+	},[fields])
     useEffect(() => {
-        
-    }, []);
-    
+        (fields+1 === title.length && title.length === fileInp.length && !title.some(t=>(t.length < 5 || t.length > 50)) && !fileInp.some(f=>f === undefined))?setIsPost(false):setIsPost(true)
+    }, [fields,title,fileInp]);
+    const post = async()=>{
+        const data = new FormData()
+        title.forEach((title,i)=>{data.append(`title-${i+1}`,title)})
+        fileInp.forEach((file,i)=>{data.append(`upload_file`,file)})
+        data.append('upload_files',fileInp)
+        disc.forEach((disc,i)=>{data.append(`disc-${i+1}`,disc)})
+        data.append('category',category)
+        data.append('tags',tags)
+        let response = await axios.post(`${baseURL}/upload`,data)
+        if(response.data.middleware)
+            return window.location.href = response.data.redirect
+        if(!response.data.success)
+            return alert(response.data.msg)
+        if(response.data.success)
+            return window.location.href = `/post?postNum=${response.data.num}&&user=${response.data.user}`
+    }
 return (
     <div>
     <style>{"\
@@ -210,57 +240,117 @@ h2{\
     <Navbar>
 
     </Navbar>
-    <div class="top d-lg-none d-flex">
-    <div class="container bg-white">
-    <div class="row justify-content-between">
-        <div class="col-5" style={{marginLeft:"20px",fontSize:"40px"}}>
+    <div className="top d-lg-none d-flex">
+    <div className="container bg-white">
+    <div className="row justify-content-between">
+        <div className="col-5" style={{marginLeft:"20px",fontSize:"40px"}}>
             <button onClick={()=> history(-1)}  style={{background: "none",border:"none"}}> <FontAwesomeIcon icon={faArrowLeft}/></button>
         </div>
-        <div class="col-5" style={{display: "flex",justifyContent: "end",alignItems: "center",fontSize: "25px",fontWeight:"bold",marginRight:"25px",textAlign:'end'}} >
+        <div className="col-5" style={{display: "flex",justifyContent: "end",alignItems: "center",fontSize: "25px",fontWeight:"bold",marginRight:"25px",textAlign:'end'}} >
         <h2>Upload Project</h2>
         </div>
     </div>
     </div>
     </div>
-    <div class="container-fluid field-c p-lg-5 p-0 mt-lg-4 "  >
-    <div class=" bor field field-1 bg-white gap-5 g-0"  style={{justifyContent:'center',alginItems:'center'}} >
-    <div class="col-md-12 col-xs-12">
-        <div class="row " style={{rowGap: "2rem"}} >
-            <div class="col-12 col-lg-6 col-xl-6">      
-            <input type="file" name="file-1" id="" class="inp-file file-1" style={{display: "none",visibility:" visible",}}></input>
-        <div class="content content-1"  style={{paddingTop:'0px'}}>
+    <div className="container-fluid field-c p-lg-5 p-0 mt-lg-4 "  >
+    <div ref={contRef} className=" bor field field-1 bg-white gap-5 g-0"  style={{justifyContent:'center',alginItems:'center',flexDirection:'column'}} >
+    <div className="col-md-12 col-xs-12">
+        <div className="row " style={{rowGap: "2rem"}} >
+            <div className="col-12 col-lg-6 col-xl-6">      
+            <input onChange={(e)=>{setFileInp(()=>{
+                fileInp[0] = e.target.files[0]
+                return fileInp
+            })}} type="file" name="file-1" id="" className="inp-file file-1" ></input>
+        <div className="content content-1"  style={{paddingTop:'0px'}}>
             <h2 style={{fontSize:"25px"}}>Title</h2>
 
-            <input type="text" name="title-1" id="" placeholder="Please Enter your project title " class="inp-title title-1" style={{marginTop:"10px"}}></input>
+            <input onChange={(e)=>{
+                let newTitle = title
+                newTitle[0] = e.target.value
+                setTitle([...newTitle])
+            }} type="text" name="title-1" id="" placeholder="Please Enter your project title " className="inp-title title-1" style={{marginTop:"10px"}}></input>
 
-                <div class="d-flex gap-3 mt-3">
-                    <input type="text" name="tags" id="tags" placeholder="Tags"></input>
+                <div className="d-flex gap-3 mt-3">
+                    <input type="text" onChange={(e)=>{setTags(e.target.value)}} name="tags" id="tags" placeholder="Tags"></input>
 
-                        <select name="cars" id="opts" class="inp-opt title-1cat-inp-post">
-                            <option value="volvo">All</option>
-                            <option value="volvo">Art</option>
-                            <option value="saab">UI/UX</option>
-                            <option value="opel">Tech</option>
-                            <option value="audi">Amvs</option>
-                            <option value="volvo">Photoshop</option>
-                            <option value="volvo">Games</option>
-                            <option value="volvo">Other</option>
+                        <select onChange={(e)=>{setCat(e.target.value)}} name="cars" id="opts" className="inp-opt title-1cat-inp-post">
+                            <option value="all">All</option>
+                            <option value="art">Art</option>
+                            <option value="uiux">UI/UX</option>
+                            <option value="tech">Tech</option>
+                            <option value="amvs">Amvs</option>
+                            <option value="photoshop">Photoshop</option>
+                            <option value="games">Games</option>
+                            <option value="other">Other</option>
                         </select>
                 </div>
             <h2 style={{fontSize:"25px"}}>Description</h2>
-            <textarea name="disc-1" id="" cols="30" rows="12" placeholder="Describe your project"  style={{marginTop:"10px"}} class="inp-disc disc-1"></textarea>
+            <textarea onChange={(e)=>{
+                let newDisc = disc
+                newDisc[0] = e.target.value
+                setDisc([...newDisc])}} name="disc-1" id="" cols="30" rows="12" placeholder="Describe your project"  style={{marginTop:"10px"}} className="inp-disc disc-1"></textarea>
         </div>
             </div>
-            <div class="col-12 col-lg-6 col-xl-6">
-                <div class="display  display-1"><FontAwesomeIcon style={{color:'#23F649'}} icon={faCamera}/></div>
+            <div className="col-12 col-lg-6 col-xl-6">
+                <div className="display  display-1"style={{height:'7.15em',width:'8.1em'}}><FontAwesomeIcon style={{color:'#23F649'}} icon={faCamera}/></div>
             </div>
             </div>
     </div>
+    {(()=>{
+        let i
+        let arr = []
+        for(i = 0;i < fields; i++){
+            arr.push(
+                <div key={i} className="col-md-12 col-xs-12">
+                    <div className="row " style={{rowGap: "2rem"}} >
+                        <div className="col-12 col-lg-6 col-xl-6">      
+                        <input onChange={(e)=>{setFileInp(()=>{
+                            fileInp[i] = e.target.files[0]
+                            return fileInp
+                        })}} type="file" name="file-1" id="" className="inp-file file-1" ></input>
+                    <div className="content content-1"  style={{paddingTop:'0px'}}>
+                        <h2 style={{fontSize:"25px"}}>Title</h2>
+                        <input onChange={(e)=>{
+                            let newTitle = title
+                            newTitle[i] = e.target.value
+                            setTitle([...newTitle])}} type="text" name="title-1" id="" placeholder="Please Enter your project title " className="inp-title title-1" style={{marginTop:"10px"}}></input>
+                        <h2 style={{fontSize:"25px"}}>Description</h2>
+                        <textarea onChange={(e)=>{
+                            let newDisc = disc
+                            newDisc[i] = e.target.value
+                            setDisc([...newDisc])}} name="disc-1" id="" cols="30" rows="16" placeholder="Describe your project"  style={{marginTop:"10px"}} className="inp-disc disc-1"></textarea>
+                    </div>
+                    </div>
+                        <div className="col-12 col-lg-6 col-xl-6">
+                            <div className="display  display-1" style={{height:'7.15em',width:'8.1em'}}><FontAwesomeIcon style={{color:'#23F649'}} icon={faCamera}/></div>
+                        </div>
+                    </div>
+            </div>
+        )
+    }
+    return arr
+    })()}
     </div>
     <div id="btn-c" className='py-2 px-4 '>
-        <div class="delete deletex" style={{cursor:"pointer",color:"rgb(255, 255, 255)",background: "rgb(255, 43, 43)",}}><FontAwesomeIcon icon={faTrash}/></div>
-        <button id="add-field "  class="addpost" style={{margin: "0 0 0 0"}} onclick='createField()'><FontAwesomeIcon icon={faPlus}/></button>
-        <button id="post-btn" disabled onclick="post()" class="btn">Post</button>
+        <div className="delete deletex" onClick={()=>{
+            if(fileInp[fields])setFileInp((()=>{
+                fileInp.pop(fields-1,1)
+                return fileInp
+            })())
+            if(title[fields])setTitle((()=>{
+                title.pop(fields-1,1)
+                return title
+            })())
+            if(disc[fields])setDisc((()=>{
+                disc.pop(fields-1,1)
+                return disc
+            })())
+            setFields(fields - 1)
+        }} style={{display:(fields > 0)?'flex':'none',cursor:"pointer",color:"rgb(255, 255, 255)",background: "rgb(255, 43, 43)",}}><FontAwesomeIcon icon={faTrash}/></div>
+        {(fields < 10)?(<button id="add-field "  className="addpost" style={{margin: "0 0 0 0"}} onClick={()=>{
+            (fields < 10)?setFields(fields + 1):alert('No more fields available')
+        }} ><FontAwesomeIcon icon={faPlus}/></button>):''}
+        <button id="post-btn" onClick={post} disabled={isPost} className="btn">Post</button>
     </div>
     </div>
 

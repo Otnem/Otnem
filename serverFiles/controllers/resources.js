@@ -155,6 +155,8 @@ const uploadFile = async(req,res)=>{
             return res.json({success:false,msg:"Too long FFFFF"}).status(400)
         let files = await req.files
         let length = files.length
+        if(length !== titleArr.length)
+            return res.send({success:false,msg:'No arguments'})
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0')
         let mm = String(today.getMonth() + 1).padStart(2, '0')
@@ -168,8 +170,11 @@ const uploadFile = async(req,res)=>{
             let cldUploadStream = cloudinary.uploader.upload_stream({
             folder:`${userName}/posts/`,
             },async(err,response)=>{
+                try{
+                if(err)
+                    return console.log(err)
                 let imageName = (response.public_id.split('/'))[((response.public_id.split('/'))).length-1]
-                if (err) return res.send(err)
+                if (err) return res.send({success:false,msg:err})
                 let imgURL = response.secure_url
                 await userDB.doc(`${userName}`).set({exists:true},{merge:true})
                 publicIdArr.splice(i,0,response.public_id)
@@ -200,6 +205,9 @@ const uploadFile = async(req,res)=>{
                     finalObj['user'] = userName
                     await postDB.doc(id).set(finalObj)
                     res.send({success:true,num:id,user:userName}).status(200)
+                }}
+                catch(err){
+                    console.log(err)
                 }
             })
             streamify.createReadStream(buffer).pipe(cldUploadStream)
