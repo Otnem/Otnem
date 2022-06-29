@@ -21,8 +21,8 @@ const Profile = () => {
     const [posts,setPosts] = useState([])
     const [searchParams, setSearchParams] = useSearchParams()
     useEffect(() => {
+        axios.defaults.withCredentials = true
         async function fetchData(){
-            axios.defaults.withCredentials = true
             document.title = "Profile | Otnem - Share your project with the world"
             let mainResponse = await axios.get(`${baseURL}/profile?packet=1&user=${(searchParams.get('user'))?searchParams.get('user'):''}`)
             if(mainResponse.data.redirect)
@@ -169,7 +169,7 @@ const Profile = () => {
         {posts.map(post=>{
         return(
             <div key={post.id} className="full_post" style={{height:'100%'}}>
-            <a style={postStyle} href={`/post?postNum=${post.postName}&&user=${post.user}`}></a>
+            <a style={postStyle} href={`/post?postNum=${post.id}&&user=${post.name}`}></a>
             <div className="post_box" data-type="art">
             <div className="index_image" >
                 <img src={post.img} width="100%" height="100%" alt="Image Not Available"></img>

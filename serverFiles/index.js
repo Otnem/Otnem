@@ -45,9 +45,9 @@ io.on('connection',async socket=>{
     socket.on('joinRoom',async(user)=>{
         try{
             if(typeof user != 'string')
-                return
+            return
             if(!await checkIfDocExists(userDB,user))
-                return
+            return
             let roomID
             let userName = socket.request.session.passport.user
             let snap = await chatRoomDB.get()
@@ -107,6 +107,7 @@ io.on('connection',async socket=>{
                 await userDB.doc(user).collection('unRead').doc(userName).update({num: FieldValue.increment(1)})
             } catch (error) {
             }
+            await socket.join(roomID)
             await chatRoomDB.doc(roomID).set({'time':currTime},{merge:true})
             io.to(roomID).emit('message',{msg:`${msg}`,userName:userName,time:currTime})
             io.to(user).emit('notif',{msg:`${userName} sent a message`,userName:userName,time:currTime})

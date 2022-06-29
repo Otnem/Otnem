@@ -13,12 +13,13 @@ const Navbar = () => {
     let [pfp,setPfp] = useState('')
     useEffect(()=>{
         async function getUser(){
+            axios.defaults.withCredentials = true
             let response = await axios.post(`${baseURL}/getUser`)
             if(response.data.success)
                 setPfp(response.data.profilePic)
         }
         getUser()
-    })
+    },[])
     const logout = async()=>{
         let response = await axios.delete(`${baseURL}/logout`)
         if(response.data.success)

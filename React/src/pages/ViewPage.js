@@ -28,11 +28,10 @@ const ViewPage = () => {
         async function getPost(){
             const response = await axios.get(`${baseURL}/postData?postNum=${(searchParams.get('postNum'))?searchParams.get('postNum'):''}&&user=${(searchParams.get('user'))?searchParams.get('user'):''}`)
             if(response.data.success){
+                axios.defaults.withCredentials = true
                 let postData = response.data
                 setPost({...postData})
-                console.log(post.commentsArray)
                 setCommentArr([...postData.commentsArray])
-                console.log(postData)
             }
         }
         getPost()
@@ -44,12 +43,10 @@ const ViewPage = () => {
                 window.location.href = response.data.redirect
             const userObj = response.data.userData
             let newPost = post
-            newPost.commentsArray.push({user:userObj.userName,content:commentTxt,commentNum:response.data.commentNum,profilePic:userObj.profilePic,own:true})
-            console.log(post.commentsQty)
+            newPost.commentsArray = [{user:userObj.userName,content:commentTxt,commentNum:response.data.commentNum,profilePic:userObj.profilePic,own:true},...newPost.commentsArray]
             newPost.commentsQty+=1
             setCommentArr([...newPost.commentsArray])
             setPost({...newPost})
-            console.log(post.commentsQty)
         }
     }
     async function deleteComment(postNum,postUser){
@@ -251,16 +248,17 @@ const ViewPage = () => {
                                         return
                                     return(
                                         <div key={comment.commentNum} className="comment_item">
-                                            <div className="d-flex flex-warp align-items-center justify-content-between pe-3r">
+                                            <div className="d-flex flex-warp align-items-center justify-content-between pe-3r"style={{flexWrap:"wrap",flexDirection:"row"}}>
                                                 <div className="item_d d-flex align-items-center gap-1">
                                                     <div className="img_container">
-                                                    <img src={comment.profilePic} style={{height:"50px",width:"50px",borderRadius:"50px"}}></img>
+                                                    <img src={comment.profilePic} style={{height:"3rem",width:"3rem",borderRadius:"50%"}}></img>
                                                     </div>
-                                                <div className='mt-2' style={{position:'relative'}}>
-                                                <div className="username_post" style={{fontSize:"20px",fontWeight:"bold"}} onClick={()=>{window.location.href = `/profile?user=${comment.user}`}}>{comment.user}
-                                                    </div> 
-                                                    <div className="comment_post">
-                                                {comment.content}</div>
+                                                <div className='mt-2' >
+                                                    <div className="username_post" style={{fontSize:"20px",fontWeight:"bold",width:"10em"}} onClick={()=>{window.location.href = `/profile?user=${comment.user}`}}>{comment.user}
+                                                </div> 
+                                                    <div className="comment_post" style={{wordWrap:'break-word',marginLeft:'1em'}}>
+                                                        {comment.content}
+                                                    </div>
                                             </div>
                                                 </div>
                                             </div>

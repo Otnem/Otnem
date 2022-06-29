@@ -108,8 +108,8 @@ const postComments = async(req,res)=>{
         let mm = String(today.getMonth() + 1).padStart(2, '0')
         let yyyy = today.getFullYear()
         today = dd + '/' + mm + '/' + yyyy    
-        await userDB.doc(`${postUser}`).collection('posts').doc(postNum).collection('comments').add({user:userName,content:comment,date:today}).then(async response=>{
-            await postDB.doc(postNum).collection('comments').doc(response.id).set({user:userName,content:comment,date:today},{merge:true})
+        await userDB.doc(`${postUser}`).collection('posts').doc(postNum).collection('comments').add({user:userName,content:comment,date:today,time:Date.parse(new Date())}).then(async response=>{
+            await postDB.doc(postNum).collection('comments').doc(response.id).set({user:userName,content:comment,date:today,time:Date.parse(new Date())},{merge:true})
             let userData = await getUser(userName)
             return res.send({success:true,postNum,userData,commentNum:response.id}).status(200)
         })
@@ -235,7 +235,7 @@ const postPreviewPage = async(req,res)=>{
         let isComment = false
         let commentsArray = []
         let postData = (await userDB.doc(query.user).collection('posts').doc(query.postNum).get()).data()
-        let commentSnapshot = await userDB.doc(query.user).collection('posts').doc(query.postNum).collection('comments').get()
+        let commentSnapshot = await userDB.doc(query.user).collection('posts').doc(query.postNum).collection('comments').orderBy('time','desc').get()
         let likeSnap = (await userDB.doc(query.user).collection('posts').doc(query.postNum).collection('likes').get())
         let likes  = likeSnap.size
         let likesArray = likeSnap.docs.map(doc=>doc.data().user)

@@ -60,7 +60,7 @@ const chatRoom = async(req,res)=>{
 const getChatMembers = async(req,res)=>{
     try{
         const userName = await getUserName(req)
-        let chatsSnap = await chatRoomDB.where('users','array-contains',`${userName}`).get()
+        let chatsSnap = await(chatRoomDB.where('users','array-contains',`${userName}`)).get()
         if(!chatsSnap)
         return res.send({chats:[]})
         let chats = []
