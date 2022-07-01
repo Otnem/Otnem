@@ -20,7 +20,7 @@ const io = socketIo(server,{cors:{
     credentials: true
 }})
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit : '5mb'}))
 app.use(bodyParser.urlencoded({extended: true}))
 const sessionMiddleWare = session({
     secret: process.env.PASSPORT_SCERET,
