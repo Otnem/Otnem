@@ -14,7 +14,7 @@
   --BlackColor: #121212;
   /* Strings */
   --navHight: 85px;
-  --navHightMobile: 125px;
+  --navHightMobile: 70px;
   --secPading: 30px;
   --secMargin: 20px;
 }
@@ -462,7 +462,7 @@ i {
     background: #fff;
     color: #D1DBDF;
     align-items: center;
-    height: calc(var(--navHightMobile) - 65px);
+    height: calc(var(--navHightMobile));
   }
   .user {
     position: relative;
@@ -570,9 +570,9 @@ i {
 
 .grid_posts {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   margin: 0 1rem;
-  gap: 3rem;
+  gap: 2rem;
 }
 .top-profile {
   width: 100%;
@@ -673,7 +673,7 @@ i {
   overflow: hidden;
   border-radius: 50px;
   cursor: pointer;
-  height: 460px;
+  height: 490px;
   position: relative;
 }
 
@@ -753,6 +753,57 @@ i {
     -ms-animation: animatedBackground 5s linear infinite;
     -o-animation: animatedBackground 5s linear infinite;
 }
+
+/*css for pagination*/
+.page {
+  display: none;
+}
+.page-active {
+  display: block;
+}
+
+.jumbotron {background-image: linear-gradient(-225deg, #B7F8DB 0%, #50A7C2 100%);
+}
+  /*Example of custom colors for pagination*/
+.page-link {
+    color: #000000;
+    background-color: #80DEEA;
+    border: 1px solid #84FFFF;
+}
+.page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #84FFFF;
+    border-color: #dee2e6;
+}
+.page-item.active .page-link {
+    color: #fff;
+    background-color: #00B8D4;
+    border-color: #00ACC1;
+}
+.page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+.page-link:focus {
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+}
+.prev .page-link {
+    background-color: #80DEEA;
+}
+.first .page-link {
+    background-color: #80DEEA;
+}
+.next .page-link {
+    background-color: #80DEEA;
+}
+.last .page-link {
+    background-color: #80DEEA;
+}
+  
+
+  
+
 
 
 /* Animation rainbow background */

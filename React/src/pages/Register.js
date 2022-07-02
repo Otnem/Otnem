@@ -11,10 +11,13 @@ const Register = () => {
 	const [password,setPassword] = useState('')
 	const [name,setName] = useState('')
 	const [errorMsg,setErrorMsg] = useState('')
+    
 	const [subBtnDisable,setSubBtnDisable] = useState(true)
 	const register = async(e)=>{
+       
 		e.preventDefault()
 		let registerResponse = await axios.post(`${baseURL}/register`,{name,email,password})
+        
 		if(registerResponse.data.success === true)
 			window.location.href = registerResponse.data.redirect
 		else
@@ -46,7 +49,7 @@ const Register = () => {
     border: "1px solid #c4c4c4",
     padding: "1em",
     marginBottom:"1.25rem" ,
-    fontSize: "0.875rem",
+    fontSize: "1rem",
     };
 	const errStyle = {
 		fontSize:"1.5em",
@@ -72,7 +75,6 @@ const Register = () => {
             </video>
             <section class="copy">
             <h1 className="font-medium text-4xl">Explore Amazing projects</h1>
-            <p>Share your work with the wolrd and get paid. </p>
 
         </section>
         </div>
@@ -99,13 +101,13 @@ const Register = () => {
             
             </div>
             <div className="login-container">
-                <p>Already a member ? | <a href="/login" className="text-decoration-none"> <strong>Sign in</strong></a>
+                <p style={{fontSize:"1.2rem"}}>Already a member ? | <a href="/login" className="text-decoration-none"> <strong>Sign in</strong></a>
                 </p>
                 </div>
                 <button disabled={subBtnDisable} onClick={register} className="signup-btn bg-priamry mt-3" type="submit" name="submit" id="loginFunCode">
                     Sign Up
                 </button>
-                <p className="mt-1 w-full text-right"><a href="forgot-password.html" className='mt-1 d-block text-right'>Forgot Password?</a></p>
+                <p className="mt-1 w-full text-right"><a href="forgot-password.html" className='mt-1 d-block text-right' style={{fontSize:"1.2rem"}}>Forgot Password?</a></p>
                 <section class="copy legal w-full text-center" >
             </section>
             </form>

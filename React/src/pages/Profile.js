@@ -63,6 +63,13 @@ const Profile = () => {
         paddingLeft:"0px",
         paddingRight:"0px"
     }
+    const lol = {
+        display:"flex",
+        gap:"0.5rem",
+        placeItems:"center",
+        justifyContent:'start',
+        alignItems:'start'
+    }
     const no = {
         marginLeft:"0vw",
         fontSize:"1.5em",
@@ -121,7 +128,7 @@ const Profile = () => {
                 <div className="pd-row">
                     <img src={(user.profilePic)?user.profilePic:loadPfp} className="pd-image" alt="Profile Image" style={{objectFit:"cover",width: "5em",height: "5em",border: "1px solid #DBDBDB"}}></img>
                 <div>
-                    <div style={{display:"flex",gap:"0.5rem",placeItems:"center",justifyContent:'center',alignItems:'center'}}>
+                    <div style={lol}>
                     <h3 style={{marginBottom:"0",fontSize:'25px',fontWeight:'bold'}}>{user.userName}</h3>
                     
                     {(user.verified)?<FontAwesomeIcon style={{color:" gb(0, 191, 255)", fontSize:"24px"}}icon={faCircleCheck} />:""}

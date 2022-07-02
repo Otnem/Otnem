@@ -11,7 +11,11 @@
 	import Upload from "./pages/Upload";
 	import Notifrom from './pages/Noti';
 	import Noti from "./pages/Noti";
-	import ViewPage from './pages/ViewPage';
+	import ViewPage from './pages/ViewPage'; 
+	import Construction from "./pages/construction";
+	import Settings from "./pages/Settings";
+	import Red from './pages/red'
+
 
 	function App() {
 	return (
@@ -23,11 +27,14 @@
 			<Route path="/feed" element={<Feed />} />
 			<Route path="/profile" element={<Profile />} />
 			<Route path="/search" element={<Search/>} />
+			<Route path="/red" element={<Red/>} />
 			<Route path="/chat" element={<Chat/>} />
 			<Route path="/upload" element={<Upload/>} />
+			<Route path="/construction" element={<Construction/>} />
 			<Route path="/user" element={<MobileChat/>} />
 			<Route path="/notification" element={<Noti/>} />
 			<Route path="/post" element={<ViewPage/>} />
+			<Route path="/settings" element={<Settings	/>} />
 
 		</Routes>
 	</div>

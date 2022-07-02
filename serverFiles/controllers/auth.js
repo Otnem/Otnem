@@ -1,8 +1,10 @@
 const login = (req,res)=>res.send({success:true}).status(202)
 const register = (req,res)=>res.send({success:true}).status(202)
+
 const registerPost= async(req,res)=>{
     try{
         const body = await req.body
+        
         const userSnapshot = await userDB.get()
         if(!(body.password && body.email && body.name))
             return res.send({success:false,msg:"Missing credentials"}).status(401)

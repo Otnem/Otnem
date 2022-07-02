@@ -3,8 +3,8 @@ import '../assets/css/all.css'
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { faHeartBroken }  from '@fortawesome/free-solid-svg-icons';
 import { faMessage }  from '@fortawesome/free-solid-svg-icons';
+import { faHeartCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { faCircleCheck }  from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios'
 import '../assets/css/boostrap.min.css'
@@ -82,7 +82,7 @@ const Feed = () => {
     "}
     </style>
     <div className="container" >
-        <div className="Selector_Links">
+        <div className="Selector_Links" style={{fontSize:"1.2rem"}}>
         <div className="SC_Item" style={(!searchParams.get('element'))?active:noActive} onClick={()=>{window.location.href = `/?attr`}} id="SC_IT" data-type="all" >
             <p >All</p>
         </div>
@@ -112,7 +112,7 @@ const Feed = () => {
     <div style={no}>
     <h2>Sorry, No Posts Available!</h2>
     </div>
-    <div className="posts_cards">
+    <div className="posts_cards mt-4">
     <div className="container-fluid"   >
     <div className="grid_posts" >
     {posts.map((post)=>{
@@ -129,11 +129,11 @@ const Feed = () => {
                     {
                         (post.isLiked)?
                         (<div style={iconStyle} className="item star" onClick={()=>{changeLike(false,post.postName,post.user)}}>
-                        <FontAwesomeIcon  icon={faHeartBroken} />
+                        <FontAwesomeIcon style={{color:"red"}} icon={faHeart} />
                         </div>)
                         :
                         (<div style={iconStyle} className="item star" onClick={()=>{changeLike(true,post.postName,post.user)}}>
-                        <FontAwesomeIcon  icon={faHeart} />
+                        <FontAwesomeIcon icon={faHeartCircleCheck} />
                         </div>)
                     }
                     </div>

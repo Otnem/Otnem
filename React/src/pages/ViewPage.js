@@ -94,20 +94,20 @@ const ViewPage = () => {
     .field-c  {\
         margin-top: 70px;\
     }\
-    .top {\
-    position: fixed;\
-    left: 0;\
-    top: 0;\
-    width: 100%;\
-    display: flex;\
-    flex-direction: row;\
-    align-items: center;\
-    border-bottom: 1px solid rgb(224, 224, 224);\
-    justify-content: center;\
-    background: #fff;\
-    height: var(--navHight);\
-    z-index: 120;\
-    }\
+    .tops {\
+        position: fixed;\
+        left: 0;\
+        top: 0;\
+        width: 100%;\
+        display: flex;\
+        flex-direction: row;\
+        align-items: center;\
+        border-bottom: 1px solid rgb(224, 224, 224);\
+        justify-content: center;\
+        background: #fff;\
+        height: var(--navHight);\
+        z-index: 120;\
+        }\
     .bor {\
         border-radius:0px    \
     }\
@@ -149,7 +149,7 @@ const ViewPage = () => {
     "
     }</style>
         <div className="posts_cards">
-    <div className="top d-lg-none d-flex">
+    <div className="tops d-lg-none d-flex">
         <div className="container bg-white">
         <div className="row justify-content-between">
             <div className="col-5" style={{marginLeft:"20px",fontSize:"40px"}}>
@@ -180,7 +180,24 @@ const ViewPage = () => {
                         <div className="desc">
                             <p style={{fontSize:"25px"}}>{(field)?field.disc:"LOOOOL"}</p>
                         </div>
-                    
+                        <div class="top">
+            <div class="items">
+              <div class="item delI"
+                onclick='axios.delete(`/deletePost`,{data:{postNum:"{{postNum}}"}});location.href = "/profile"'><i
+                  class="fa-solid fa-trash-can"></i></div>
+              <div class="item sned" onclick="location.href = `/chatRoom?user={{postUser}}&redirect=true`"><i
+                  class="fas fa-comment"></i></div>
+                  <div class="item donate" onclick="
+                      location.href = 'https://www.paypal.com/webscr?cmd=_xclick&item_name=Donation&amount=&currency_code=USD&business={{paypal}}'"><i class="fa-solid fa-money-bill"></i></div>
+
+              <div class="item star" id="{{postNum}}-id" onclick="removeLike()">
+                <FontAwesomeIcon style={{color:"red"}} icon={faHeartBroken}/>
+              </div>
+              <div class="item star" id="{{postNum}}-id" onclick="addLike()">
+              <FontAwesomeIcon style={{color:"red"}} icon={faHeart}/>
+              </div>
+            </div>
+          </div>
                         <div className="bottom">
                             <a className="UserDetails" style={{cursor:"pointer"}} href={`/profile?user=${post.postUser}&redirect=true`}>
                             <div className="name_time">

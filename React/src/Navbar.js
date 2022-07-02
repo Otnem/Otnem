@@ -39,6 +39,30 @@ const Navbar = () => {
             display:none\
         }\
         }\
+        #sc-n{\
+            visibility: hidden;\
+            text-align: start;\
+            padding: 0.7rem 1rem;\
+            border:1px solid #DBE0E4;\
+            border-radius: 1em;\
+            background-color: white;\
+        }\
+            #s-user-n:focus + #sc-n, #sc-n:focus + #sc-n{\
+            visibility: visible;\
+        }\
+        .search-sug-n{\
+            text-align: start;\
+            width: 100%;\
+            cursor: pointer;\
+            padding: 0.2em 0;\
+            font-weight: 450;\
+            transition:all 200ms;\
+            background:none;\
+            border:none;\
+        }\
+        .search-sug-n:hover{\
+            color:rgb(26, 243, 30)\
+        }\
     "
     }</style>
         <div className="navbar__">
@@ -76,7 +100,7 @@ const Navbar = () => {
                 placeholder="Search User"
                 autoComplete="off"
             />
-            <div id="sc-n" ></div>
+        <div id="sc-n" style={{position: "absolute",marginTop: "3.5em"}}></div>
 
             </div>
         </form>
@@ -126,7 +150,7 @@ const Navbar = () => {
 
     </ul>
     <a href="/upload">
-        <button className="btn_createPost">
+        <button className="btn_createPost" style={{fontSize:"1.2rem"}}>
         Upload
         </button>
     </a>

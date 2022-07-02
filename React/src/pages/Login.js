@@ -33,7 +33,7 @@ const Login = () => {
 			setErrorMsg(loginResponse.data.msg)
 	}
 	const top ={
-	marginTop:"4rem"
+	marginTop:"5rem"
 	};
 	const errStyle = {
 		fontSize:"1.5em",
@@ -53,7 +53,7 @@ const Login = () => {
 	border: "1px solid #c4c4c4",
 	padding: "1em",
 	marginBottom:"1.25rem" ,
-	fontSize: "0.875rem",
+	fontSize: "1.0rem",
 	};
 	return (
 	<div >
@@ -70,7 +70,6 @@ const Login = () => {
 			</video>
 			<section class="copy">
 			<h1 className="font-medium text-4xl">Explore Amazing projects</h1>
-			<p>Share your work with the wolrd and get paid. </p>
 
 		</section>
 		</div>
@@ -93,13 +92,13 @@ const Login = () => {
 			
 			</div>
 			<div className="login-container">
-				<p>Be a part of our family | <a href="/register" className="text-decoration-none"> <strong>Sign up</strong></a>
+				<p style={{fontSize:"1.2rem"}}>Be a part of our family | <a href="/register" className="text-decoration-none"> <strong>Sign up</strong></a>
 				</p>
 				</div>
 				<button onClick={login} disabled={subBtnDisable} className="signup-btn bg-priamry mt-3" name="submit" id="loginFunCode">
 					Sign In
 				</button>
-				<p className="mt-1 w-full text-right"><a href="forgot-password.html" className='mt-1 d-block text-right'>Forgot Password?</a></p>
+				<p className="mt-1 w-full text-right"><a href="forgot-password.html" className='mt-1 d-block text-right' style={{fontSize:"1.2rem",fontWeight:"bold"}}>Forgot Password?</a></p>
 				<section class="copy legal w-full text-center" >
 				<p className="text-center"><span className='small'>By continuing, you agree to accept our <br></br><a href="#" className="color:black">Privacy Policy</a> &amp; <a href="#" className="text-color-black">Terms of Service</a></span></p>
 			</section>
